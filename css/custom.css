@@ -145,6 +145,31 @@ input:focus, select:focus, textarea:focus {
               0 8px 10px -6px rgba(0, 0, 0, 0.2);
 }
 
+/* Active nav item - HARUS di bawah hover rule agar menang */
+.nav-item {
+  color: rgb(55 65 81); /* text-gray-700 */
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background-color: rgb(239 246 255); /* bg-blue-50 */
+}
+
+/* Class active harus PUNYA !important atau specificity tinggi */
+.nav-item.active,
+.nav-item.active:hover {
+  background-color: rgb(219 234 254) !important; /* bg-blue-100 */
+  color: rgb(37 99 235) !important; /* text-blue-600 */
+  font-weight: 600 !important;
+}
+
+/* Dark mode active state */
+.dark .nav-item.active,
+.dark .nav-item.active:hover {
+  background-color: rgb(30 58 138) !important; /* bg-blue-900 */
+  color: rgb(147 197 253) !important; /* text-blue-300 */
+}
+
 /* Print styles */
 @media print {
   .no-print {

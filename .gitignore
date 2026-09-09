@@ -1,1 +1,1 @@
-Nothing should be ignored since the changes only include source files (.html, .js) without any build artifacts, dependencies, or temporary files.
+(css/custom.css and js/components/sidebar.js are source files, no build artifacts, dependencies, or temp files in the changes)
