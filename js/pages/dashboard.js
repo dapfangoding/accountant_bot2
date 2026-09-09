@@ -219,7 +219,7 @@ function renderRecentTransactions() {
           <i class="fas fa-receipt text-gray-400 text-2xl"></i>
         </div>
         <p class="text-gray-500 dark:text-gray-400">Belum ada transaksi</p>
-        <a href="#chatbot" class="text-primary-600 dark:text-primary-400 hover:underline mt-2 inline-block">
+        <a href="chatbot.html" class="text-primary-600 dark:text-primary-400 hover:underline mt-2 inline-block">
           Tambah transaksi pertama
         </a>
       </div>
@@ -270,7 +270,7 @@ function renderRecentTransactions() {
       </table>
     </div>
     <div class="mt-4 text-center">
-      <a href="#transactions" class="text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium">
+      <a href="transactions.html" class="text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium">
         Lihat Semua Transaksi <i class="fas fa-arrow-right ml-1"></i>
       </a>
     </div>
