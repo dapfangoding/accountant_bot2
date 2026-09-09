@@ -48,7 +48,7 @@ const Sidebar = {
           ${this.menuItems.map(item => `
             <a href="${item.page}" 
                data-page="${item.id}"
-               class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 ${item.id === currentPage ? 'active bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300' : ''}"
+               class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                onclick="Sidebar.handleNavigation(event, '${item.id}')">
               <i class="fas ${item.icon} w-5"></i>
               <span class="font-medium">${item.label}</span>
@@ -72,16 +72,62 @@ const Sidebar = {
     `;
 
     this.setupEventListeners();
+    
+    // PENTING: panggil setActiveNavItem SETELAH DOM updated
+    // Gunakan setTimeout kecil untuk pastikan DOM sudah ready
+    setTimeout(() => {
+      this.setActiveNavItem();
+    }, 50);
   },
 
   /**
-   * Get current page name from URL
+   * Get current page name from URL with multiple fallbacks
    */
   getCurrentPageName() {
-    const path = window.location.pathname;
-    const fileName = path.substring(path.lastIndexOf('/') + 1);
-    const pageName = fileName.replace('.html', '');
-    return pageName || 'dashboard';
+    // Ambil path dari URL dengan berbagai fallback
+    let currentPage = window.location.pathname.split('/').pop();
+    
+    // Fallback 1: kalau path kosong (root), anggap dashboard
+    if (!currentPage || currentPage === '') {
+      currentPage = 'dashboard';
+    }
+    
+    // Fallback 2: hapus .html extension jika ada
+    currentPage = currentPage.replace('.html', '').toLowerCase();
+    
+    // Fallback 3: kalau masih ada path aneh, ambil yang terakhir
+    if (currentPage.includes('/')) {
+      currentPage = currentPage.split('/').pop();
+    }
+    
+    // Debug: uncomment baris ini untuk cek di console
+    console.log('🔍 Current page detected:', currentPage);
+    console.log('🔍 Full pathname:', window.location.pathname);
+    
+    return currentPage;
+  },
+
+  /**
+   * Set active state on nav item based on current page
+   */
+  setActiveNavItem() {
+    const currentPage = this.getCurrentPageName();
+    
+    // Update semua nav items
+    document.querySelectorAll('.nav-item').forEach(item => {
+      const page = item.getAttribute('data-page');
+      
+      // Hapus semua class active dulu
+      item.classList.remove('active', 'bg-blue-100', 'text-blue-600', 'font-semibold');
+      item.classList.add('text-gray-700');
+      
+      // Match dengan current page
+      if (page === currentPage) {
+        item.classList.add('active', 'bg-blue-100', 'text-blue-600', 'font-semibold');
+        item.classList.remove('text-gray-700');
+        console.log('✅ Active set to:', page);
+      }
+    });
   },
 
   /**
