@@ -1,390 +1,49 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot Keuangan Pribadi</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .chat-container { height: calc(100vh - 180px); }
-        .message-bubble { max-width: 80%; word-wrap: break-word; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinBot - Asisten Keuangan Pribadi</title>
+  
+  <!-- Redirect to dashboard -->
+  <script>
+    window.location.href = '#dashboard';
+  </script>
+  
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .loading {
+      text-align: center;
+      color: white;
+    }
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-
-<div class="max-w-4xl mx-auto p-4 h-screen flex flex-col">
-    <!-- Header & Summary -->
-    <div class="bg-white rounded-xl shadow-md p-4 mb-4 grid grid-cols-3 gap-4">
-        <div class="text-center p-3 bg-blue-50 rounded-lg">
-            <p class="text-sm text-gray-600">Saldo Saat Ini</p>
-            <p class="text-2xl font-bold text-blue-700" id="balance">Rp 0</p>
-        </div>
-        <div class="text-center p-3 bg-green-50 rounded-lg">
-            <p class="text-sm text-gray-600">Pemasukan</p>
-            <p class="text-xl font-bold text-green-600" id="total-income">Rp 0</p>
-        </div>
-        <div class="text-center p-3 bg-red-50 rounded-lg">
-            <p class="text-sm text-gray-600">Pengeluaran</p>
-            <p class="text-xl font-bold text-red-600" id="total-expense">Rp 0</p>
-        </div>
-    </div>
-
-    <!-- Chat Area -->
-    <div class="bg-white rounded-xl shadow-md flex-1 flex flex-col overflow-hidden">
-        <div id="chat-box" class="chat-container overflow-y-auto p-4 space-y-4 bg-gray-50">
-            <div class="flex justify-start">
-                <div class="message-bubble bg-blue-100 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm">
-                    Halo, Saudara! Saya asisten keuangan Anda. Coba ketik: <br>
-                    • "Masuk 5000000 gaji"<br>
-                    • "Keluar 25000 makan siang"<br>
-                    • "Lihat laporan"<br>
-                    • "hapus makan" (hapus via AI)<br>
-                    • "ubah makan jadi 30000" (edit jumlah via AI)
-                </div>
-            </div>
-        </div>
-
-        <!-- Transaction Table Section -->
-        <div class="border-t border-gray-200 bg-white">
-            <div class="p-3 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-                <h3 class="font-semibold text-gray-700"><i class="fas fa-table mr-2"></i>Tabel Transaksi</h3>
-                <span class="text-sm text-gray-500" id="transaction-count">0 transaksi</span>
-            </div>
-            <div class="overflow-x-auto max-h-64 overflow-y-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-100 sticky top-0">
-                        <tr>
-                            <th class="px-3 py-2 text-left font-medium text-gray-600">No</th>
-                            <th class="px-3 py-2 text-left font-medium text-gray-600">Tanggal</th>
-                            <th class="px-3 py-2 text-left font-medium text-gray-600">Tipe</th>
-                            <th class="px-3 py-2 text-left font-medium text-gray-600">Deskripsi</th>
-                            <th class="px-3 py-2 text-right font-medium text-gray-600">Jumlah</th>
-                            <th class="px-3 py-2 text-center font-medium text-gray-600">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transaction-table-body" class="divide-y divide-gray-200">
-                        <!-- Rows will be rendered here -->
-                    </tbody>
-                </table>
-            </div>
-            <div id="empty-table-message" class="p-4 text-center text-gray-500 italic">
-                Belum ada transaksi. Mulai dengan mengetik "Masuk [jumlah] [deskripsi]" atau "Keluar [jumlah] [deskripsi]"
-            </div>
-        </div>
-
-        <!-- Input Area -->
-        <div class="p-4 bg-white border-t border-gray-200">
-            <form id="chat-form" class="flex gap-2">
-                <input type="text" id="user-input" 
-                    class="flex-1 border border-gray-300 rounded-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                    placeholder="Ketik perintah keuangan di sini..." autocomplete="off">
-                <button type="submit" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-3 font-semibold transition">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    // --- STATE MANAGEMENT (LocalStorage) ---
-    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-    let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-
-    // --- CORE FUNCTIONS ---
-    function formatRupiah(amount) {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
-    }
-
-    function formatDate(isoString) {
-        const date = new Date(isoString);
-        return date.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: '2-digit' });
-    }
-
-    function updateDashboard() {
-        const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-        const expense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
-        
-        document.getElementById('balance').textContent = formatRupiah(income - expense);
-        document.getElementById('total-income').textContent = formatRupiah(income);
-        document.getElementById('total-expense').textContent = formatRupiah(expense);
-        
-        renderTransactionTable();
-    }
-
-    function renderTransactionTable() {
-        const tbody = document.getElementById('transaction-table-body');
-        const emptyMsg = document.getElementById('empty-table-message');
-        const countSpan = document.getElementById('transaction-count');
-        
-        // Sort by newest first
-        const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        countSpan.textContent = `${sorted.length} transaksi`;
-        
-        if (sorted.length === 0) {
-            tbody.innerHTML = '';
-            emptyMsg.style.display = 'block';
-            return;
-        }
-        
-        emptyMsg.style.display = 'none';
-        tbody.innerHTML = sorted.map((t, index) => {
-            const isIncome = t.type === 'income';
-            const badgeClass = isIncome ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
-            const typeLabel = isIncome ? 'Masuk' : 'Keluar';
-            const amountClass = isIncome ? 'text-green-600' : 'text-red-600';
-            
-            return `
-                <tr class="hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}" data-id="${t.id}">
-                    <td class="px-3 py-2 text-gray-600">${index + 1}</td>
-                    <td class="px-3 py-2 text-gray-600">${formatDate(t.date)}</td>
-                    <td class="px-3 py-2"><span class="px-2 py-1 rounded-full text-xs font-medium ${badgeClass}">${typeLabel}</span></td>
-                    <td class="px-3 py-2 text-gray-700 view-desc">${t.desc}</td>
-                    <td class="px-3 py-2 text-right font-medium ${amountClass} view-amount">${formatRupiah(t.amount)}</td>
-                    <td class="px-3 py-2 text-center">
-                        <div class="action-buttons flex justify-center gap-1">
-                            <button onclick="editRow(${t.id})" class="edit-btn px-2 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded transition">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button onclick="deleteRow(${t.id})" class="delete-btn px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded transition">
-                                <i class="fas fa-trash"></i> Hapus
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-    }
-
-    function editRow(id) {
-        const row = document.querySelector(`tr[data-id="${id}"]`);
-        if (!row) return;
-        
-        const transaction = transactions.find(t => t.id === id);
-        if (!transaction) return;
-        
-        const descCell = row.querySelector('.view-desc');
-        const amountCell = row.querySelector('.view-amount');
-        const actionCell = row.querySelector('.action-buttons');
-        
-        const currentDesc = transaction.desc;
-        const currentAmount = transaction.amount;
-        
-        descCell.innerHTML = `<input type="text" class="edit-desc-input w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" value="${currentDesc}" />`;
-        amountCell.innerHTML = `<input type="number" class="edit-amount-input w-full border border-gray-300 rounded px-2 py-1 text-sm text-right focus:outline-none focus:ring-1 focus:ring-blue-500" value="${currentAmount}" />`;
-        
-        actionCell.innerHTML = `
-            <button onclick="saveRow(${id})" class="save-btn px-2 py-1 text-xs bg-green-500 hover:bg-green-600 text-white rounded transition">
-                <i class="fas fa-check"></i> Save
-            </button>
-            <button onclick="cancelEdit(${id})" class="cancel-btn px-2 py-1 text-xs bg-gray-500 hover:bg-gray-600 text-white rounded transition">
-                <i class="fas fa-times"></i> Cancel
-            </button>
-        `;
-    }
-
-    function saveRow(id) {
-        const row = document.querySelector(`tr[data-id="${id}"]`);
-        if (!row) return;
-        
-        const transaction = transactions.find(t => t.id === id);
-        if (!transaction) return;
-        
-        const newDesc = row.querySelector('.edit-desc-input').value.trim();
-        const newAmount = parseInt(row.querySelector('.edit-amount-input').value);
-        
-        if (!newDesc || isNaN(newAmount) || newAmount <= 0) {
-            alert('Deskripsi tidak boleh kosong dan jumlah harus angka positif!');
-            return;
-        }
-        
-        transaction.desc = newDesc;
-        transaction.amount = newAmount;
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-        updateDashboard();
-        addMessage('assistant', `✅ Transaksi "${newDesc}" berhasil diperbarui.`);
-    }
-
-    function cancelEdit(id) {
-        renderTransactionTable();
-    }
-
-    function deleteRow(id) {
-        if (!confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) return;
-        
-        const transaction = transactions.find(t => t.id === id);
-        if (transaction) {
-            transactions = transactions.filter(t => t.id !== id);
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-            updateDashboard();
-            addMessage('assistant', `🗑️ Transaksi "${transaction.desc}" telah dihapus.`);
-        }
-    }
-
-    function addMessage(role, text) {
-        const chatBox = document.getElementById('chat-box');
-        const div = document.createElement('div');
-        div.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'}`;
-        div.innerHTML = `
-            <div class="message-bubble ${role === 'user' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-gray-800'} p-3 rounded-2xl ${role === 'user' ? 'rounded-tr-none' : 'rounded-tl-none'} shadow-sm">
-                ${text}
-            </div>
-        `;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        
-        chatHistory.push({ role, text });
-        localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-    }
-
-    // --- AI / PARSING LOGIC (Rule-based MVP) ---
-    function processCommand(input) {
-        const lower = input.toLowerCase();
-        
-        // 1. Intent: Tambah Pemasukan
-        if (lower.includes('masuk') || lower.includes('tambah') || lower.includes('gaji') || lower.includes('income')) {
-            const amount = parseInt(input.match(/\d+/)?.[0] || 0);
-            const desc = input.replace(/\d+/g, '').replace(/masuk|tambah|gaji|income/gi, '').trim() || 'Pemasukan';
-            if (amount > 0) {
-                transactions.push({ id: Date.now(), type: 'income', amount, desc, date: new Date().toISOString() });
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                updateDashboard();
-                return `✅ Berhasil dicatat: Pemasukan ${formatRupiah(amount)} untuk "${desc}".`;
-            }
-        }
-        
-        // 2. Intent: Tambah Pengeluaran
-        if (lower.includes('keluar') || lower.includes('bayar') || lower.includes('beli') || lower.includes('expense')) {
-            const amount = parseInt(input.match(/\d+/)?.[0] || 0);
-            const desc = input.replace(/\d+/g, '').replace(/keluar|bayar|beli|expense/gi, '').trim() || 'Pengeluaran';
-            if (amount > 0) {
-                transactions.push({ id: Date.now(), type: 'expense', amount, desc, date: new Date().toISOString() });
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                updateDashboard();
-                return `✅ Berhasil dicatat: Pengeluaran ${formatRupiah(amount)} untuk "${desc}".`;
-            }
-        }
-
-        // 3. Intent: Lihat Laporan
-        if (lower.includes('laporan') || lower.includes('ringkasan') || lower.includes('sisa')) {
-            const income = transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-            const expense = transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
-            return `📊 <b>Ringkasan Keuangan:</b><br>• Pemasukan: ${formatRupiah(income)}<br>• Pengeluaran: ${formatRupiah(expense)}<br>• <b>Sisa Saldo: ${formatRupiah(income - expense)}</b>`;
-        }
-
-        // 4. Intent: Hapus Data (Reset All)
-        if (lower === 'hapus semua' || lower === 'reset semua' || lower === 'hapus semua data') {
-            transactions = [];
-            chatHistory = [];
-            localStorage.removeItem('transactions');
-            localStorage.removeItem('chatHistory');
-            updateDashboard();
-            document.getElementById('chat-box').innerHTML = '';
-            return `🗑️ Semua data keuangan dan riwayat chat telah direset.`;
-        }
-
-        // 5. Intent: Hapus via AI (hapus [deskripsi])
-        if (lower.startsWith('hapus ') && !lower.includes('semua')) {
-            const searchDesc = lower.replace('hapus ', '').trim();
-            const matches = transactions.filter(t => t.desc.toLowerCase().includes(searchDesc));
-            
-            if (matches.length === 0) {
-                return `❌ Tidak ditemukan transaksi dengan deskripsi "${searchDesc}".`;
-            }
-            
-            if (matches.length === 1) {
-                const t = matches[0];
-                transactions = transactions.filter(tr => tr.id !== t.id);
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                updateDashboard();
-                return `✅ Transaksi "${t.desc}" (${formatRupiah(t.amount)}) telah dihapus.`;
-            }
-            
-            // Multiple matches - show list
-            let msg = `⚠️ Ditemukan ${matches.length} transaksi yang cocok:<br>`;
-            matches.forEach((t, i) => {
-                const typeLabel = t.type === 'income' ? 'Masuk' : 'Keluar';
-                msg += `${i + 1}. "${t.desc}" - ${formatRupiah(t.amount)} (${typeLabel})<br>`;
-            });
-            msg += `<br>Klik tombol "Hapus" pada tabel untuk memilih, atau gunakan deskripsi yang lebih spesifik.`;
-            return msg;
-        }
-
-        // 6. Intent: Ubah via AI (ubah [deskripsi] jadi [jumlah/deskripsi baru])
-        if (lower.startsWith('ubah ') && lower.includes('jadi')) {
-            const parts = lower.split('jadi');
-            const searchDesc = parts[0].replace('ubah ', '').trim();
-            const newValue = parts[1].trim();
-            
-            const matches = transactions.filter(t => t.desc.toLowerCase().includes(searchDesc));
-            
-            if (matches.length === 0) {
-                return `❌ Tidak ditemukan transaksi dengan deskripsi "${searchDesc}".`;
-            }
-            
-            if (matches.length > 1) {
-                let msg = `⚠️ Ditemukan ${matches.length} transaksi yang cocok:<br>`;
-                matches.forEach((t, i) => {
-                    const typeLabel = t.type === 'income' ? 'Masuk' : 'Keluar';
-                    msg += `${i + 1}. "${t.desc}" - ${formatRupiah(t.amount)} (${typeLabel})<br>`;
-                });
-                msg += `<br>Gunakan deskripsi yang lebih spesifik untuk mengubah satu transaksi.`;
-                return msg;
-            }
-            
-            const t = matches[0];
-            
-            // Check if newValue is a number (update amount)
-            const numValue = parseInt(newValue.replace(/[^0-9]/g, ''));
-            if (!isNaN(numValue) && numValue > 0) {
-                t.amount = numValue;
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                updateDashboard();
-                return `✅ Jumlah transaksi "${t.desc}" diubah menjadi ${formatRupiah(numValue)}.`;
-            }
-            
-            // Otherwise update description
-            const oldDesc = t.desc;
-            t.desc = newValue;
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-            updateDashboard();
-            return `✅ Deskripsi transaksi "${oldDesc}" diubah menjadi "${newValue}".`;
-        }
-
-        // Default Fallback
-        return `🤔 Maaf, saya belum mengerti. Coba format:<br>• "Masuk 5000000 gaji"<br>• "Keluar 25000 makan"<br>• "hapus makan"<br>• "ubah makan jadi 30000"`;
-    }
-
-    // --- EVENT LISTENERS ---
-    document.getElementById('chat-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const input = document.getElementById('user-input');
-        const text = input.value.trim();
-        if (!text) return;
-
-        addMessage('user', text);
-        input.value = '';
-
-        // Simulasi "berpikir" sejenak
-        setTimeout(() => {
-            const response = processCommand(text);
-            addMessage('assistant', response);
-        }, 400);
-    });
-
-    // --- INIT ---
-    updateDashboard();
-    // Restore chat history (optional, max 10 last messages)
-    chatHistory.slice(-10).forEach(msg => {
-        const chatBox = document.getElementById('chat-box');
-        const div = document.createElement('div');
-        div.className = `flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`;
-        div.innerHTML = `<div class="message-bubble ${msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-gray-800'} p-3 rounded-2xl ${msg.role === 'user' ? 'rounded-tr-none' : 'rounded-tl-none'} shadow-sm">${msg.text}</div>`;
-        chatBox.appendChild(div);
-    });
-</script>
+<body>
+  <div class="loading">
+    <div class="spinner"></div>
+    <h1>FinBot</h1>
+    <p>Memuat aplikasi...</p>
+  </div>
 </body>
 </html>

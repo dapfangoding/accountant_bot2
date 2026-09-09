@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - FinBot</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="css/tailwind.config.js"></script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors">
+  <!-- Sidebar Container -->
+  <div id="sidebar-container"></div>
+  
+  <!-- Main Content Area -->
+  <div class="lg:pl-64">
+    <!-- Topbar Container -->
+    <div id="topbar-container"></div>
+    
+    <!-- Page Content -->
+    <main id="page-content" class="p-4 sm:p-6 lg:p-8">
+      <!-- Summary Cards -->
+      <div id="dashboard-summary" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"></div>
+      
+      <!-- Charts Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Expense Pie Chart -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Pengeluaran per Kategori</h3>
+          <div class="h-64">
+            <canvas id="expensePieChart"></canvas>
+          </div>
+        </div>
+        
+        <!-- Income vs Expense Bar Chart -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+          <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Pemasukan vs Pengeluaran (7 Hari)</h3>
+          <div class="h-64">
+            <canvas id="incomeExpenseChart"></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Recent Transactions -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Transaksi Terbaru</h3>
+          <a href="#transactions" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">Lihat Semua</a>
+        </div>
+        <div id="recentTransactions"></div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Scripts - Load in order -->
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/components/topbar.js"></script>
+  <script src="js/components/charts.js"></script>
+  <script src="js/pages/dashboard.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

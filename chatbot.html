@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot - FinBot</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="css/tailwind.config.js"></script>
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors">
+  <!-- Sidebar Container -->
+  <div id="sidebar-container"></div>
+  
+  <!-- Main Content Area -->
+  <div class="lg:pl-64">
+    <!-- Topbar Container -->
+    <div id="topbar-container"></div>
+    
+    <!-- Page Content -->
+    <main id="page-content" class="p-4 sm:p-6 lg:p-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Chat Container -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+          <!-- Chat Messages -->
+          <div id="chat-messages" class="h-[calc(100vh-280px)] overflow-y-auto p-4 sm:p-6 space-y-4">
+            <!-- Messages will be rendered here -->
+          </div>
+          
+          <!-- Input Area -->
+          <div class="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800/50">
+            <div class="flex gap-3">
+              <textarea 
+                id="chat-input" 
+                placeholder="Ketik perintah Anda... (contoh: tambah pengeluaran 50000 untuk makan siang)"
+                class="flex-1 resize-none border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400"
+                rows="1"
+                maxlength="500"
+              ></textarea>
+              <button 
+                id="send-btn"
+                class="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-xl transition-colors flex items-center justify-center"
+              >
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+            <div class="flex items-center justify-between mt-2">
+              <button id="clear-chat" class="text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fas fa-trash mr-1"></i> Hapus Riwayat
+              </button>
+              <span class="text-xs text-gray-400">Enter untuk kirim, Shift+Enter untuk baris baru</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Quick Commands -->
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button onclick="document.getElementById('chat-input').value='tambah pengeluaran 50000 untuk makan siang'" class="px-3 py-2 bg-white dark:bg-gray-800 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 transition-colors border border-gray-200 dark:border-gray-700">
+            🍽️ Tambah Makan
+          </button>
+          <button onclick="document.getElementById('chat-input').value='tambah pemasukan 5000000 untuk gaji'" class="px-3 py-2 bg-white dark:bg-gray-800 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 transition-colors border border-gray-200 dark:border-gray-700">
+            💰 Tambah Gaji
+          </button>
+          <button onclick="document.getElementById('chat-input').value='laporan'" class="px-3 py-2 bg-white dark:bg-gray-800 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 transition-colors border border-gray-200 dark:border-gray-700">
+            📊 Laporan
+          </button>
+          <button onclick="document.getElementById('chat-input').value='help'" class="px-3 py-2 bg-white dark:bg-gray-800 rounded-lg text-xs text-gray-600 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 transition-colors border border-gray-200 dark:border-gray-700">
+            ❓ Bantuan
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Scripts -->
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/components/topbar.js"></script>
+  <script src="js/pages/chatbot.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
