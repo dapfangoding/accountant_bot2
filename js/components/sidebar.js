@@ -5,12 +5,12 @@
 
 const Sidebar = {
   menuItems: [
-    { id: 'dashboard', label: 'Dashboard', icon: 'fa-home', page: 'dashboard' },
-    { id: 'chatbot', label: 'Chatbot', icon: 'fa-robot', page: 'chatbot' },
-    { id: 'transactions', label: 'Transaksi', icon: 'fa-list', page: 'transactions' },
-    { id: 'categories', label: 'Kategori', icon: 'fa-tags', page: 'categories' },
-    { id: 'reports', label: 'Laporan', icon: 'fa-chart-line', page: 'reports' },
-    { id: 'settings', label: 'Pengaturan', icon: 'fa-cog', page: 'settings' },
+    { id: 'dashboard', label: 'Dashboard', icon: 'fa-home', page: 'dashboard.html' },
+    { id: 'chatbot', label: 'Chatbot', icon: 'fa-robot', page: 'chatbot.html' },
+    { id: 'transactions', label: 'Transaksi', icon: 'fa-list', page: 'transactions.html' },
+    { id: 'categories', label: 'Kategori', icon: 'fa-tags', page: 'categories.html' },
+    { id: 'reports', label: 'Laporan', icon: 'fa-chart-line', page: 'reports.html' },
+    { id: 'settings', label: 'Pengaturan', icon: 'fa-cog', page: 'settings.html' },
   ],
 
   /**
@@ -19,6 +19,9 @@ const Sidebar = {
   render() {
     const container = document.getElementById('sidebar-container');
     if (!container) return;
+
+    // Get current page name from URL
+    const currentPage = this.getCurrentPageName();
 
     container.innerHTML = `
       <!-- Mobile sidebar overlay -->
@@ -43,10 +46,10 @@ const Sidebar = {
         <!-- Navigation -->
         <nav class="mt-6 px-4 space-y-2">
           ${this.menuItems.map(item => `
-            <a href="#${item.page}" 
-               data-page="${item.page}"
-               class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-               onclick="Sidebar.handleNavigation(event, '${item.page}')">
+            <a href="${item.page}" 
+               data-page="${item.id}"
+               class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 ${item.id === currentPage ? 'active bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300' : ''}"
+               onclick="Sidebar.handleNavigation(event, '${item.id}')">
               <i class="fas ${item.icon} w-5"></i>
               <span class="font-medium">${item.label}</span>
             </a>
@@ -69,7 +72,16 @@ const Sidebar = {
     `;
 
     this.setupEventListeners();
-    this.updateActiveState();
+  },
+
+  /**
+   * Get current page name from URL
+   */
+  getCurrentPageName() {
+    const path = window.location.pathname;
+    const fileName = path.substring(path.lastIndexOf('/') + 1);
+    const pageName = fileName.replace('.html', '');
+    return pageName || 'dashboard';
   },
 
   /**
@@ -122,25 +134,6 @@ const Sidebar = {
       overlay?.classList.remove('active');
       document.body.style.overflow = '';
     }
-  },
-
-  /**
-   * Update active state based on current page
-   */
-  updateActiveState() {
-    const currentPage = Router.getCurrentPage();
-    
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-      const page = link.dataset.page;
-      
-      if (page === currentPage) {
-        link.classList.add('active', 'bg-primary-100', 'text-primary-700', 'dark:bg-primary-900', 'dark:text-primary-300');
-        link.classList.remove('text-gray-600', 'dark:text-gray-400', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
-      } else {
-        link.classList.remove('active', 'bg-primary-100', 'text-primary-700', 'dark:bg-primary-900', 'dark:text-primary-300');
-        link.classList.add('text-gray-600', 'dark:text-gray-400');
-      }
-    });
   },
 
   /**
