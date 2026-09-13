@@ -43,7 +43,7 @@ const Sidebar = {
         <!-- Navigation -->
         <nav class="mt-6 px-4 space-y-2">
           ${this.menuItems.map(item => `
-            <a href="#${item.page}" 
+            <a href="${item.page}.html" 
                data-page="${item.page}"
                class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                onclick="Sidebar.handleNavigation(event, '${item.page}')">
@@ -128,7 +128,8 @@ const Sidebar = {
    * Update active state based on current page
    */
   updateActiveState() {
-    const currentPage = Router.getCurrentPage();
+    const path = window.location.pathname;
+    const currentPage = path.split('/').pop().replace('.html', '') || 'dashboard';
     
     document.querySelectorAll('.sidebar-link').forEach(link => {
       const page = link.dataset.page;
