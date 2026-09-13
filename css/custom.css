@@ -167,29 +167,23 @@ input:focus, select:focus, textarea:focus {
 
 /* Mobile Optimizations */
 @media (max-width: 640px) {
-  /* Spacing */
-  main {
-    padding: 0.75rem !important;
-  }
+  /* Global spacing */
+  body { padding-bottom: 2rem; }
   
-  /* Text and title adjustments */
-  h1 { font-size: 1.25rem !important; }
-  h2 { font-size: 1.5rem !important; }
+  /* Chatbot adjustments */
+  .chat-bubble { max-width: 95% !important; }
+  #chat-messages { margin-bottom: 1rem !important; }
   
-  /* Inputs and buttons touch target */
-  button, input, select, textarea {
-    min-height: 42px;
-  }
-
-  /* Table horizontal scroll wrapper */
-  .overflow-x-auto {
-    -webkit-overflow-scrolling: touch;
-    border-radius: 0.5rem;
-  }
+  /* Reports adjustments */
+  .grid-cols-1.sm\:grid-cols-2 { gap: 1rem !important; }
   
-  /* Chatbot responsive view */
-  #chat-messages {
-    max-height: calc(100vh - 220px) !important;
+  /* Settings adjustments */
+  .flex.items-center.justify-between {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  #dark-mode-toggle-settings {
+    margin-left: auto;
   }
 }
 
