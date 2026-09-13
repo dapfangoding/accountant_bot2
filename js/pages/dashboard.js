@@ -6,18 +6,30 @@
 function initDashboard() {
   Sidebar.render();
   Topbar.render('Dashboard');
-  renderSummaryCards();
-  renderExpensePieChart();
-  renderIncomeExpenseBarChart();
-  renderRecentTransactions();
   
-  // Listen for storage changes to refresh data
-  window.addEventListener('storage-change', () => {
+  // Update data first
+  const transactions = Storage.getTransactions();
+  if (transactions.length > 0) {
     renderSummaryCards();
     renderExpensePieChart();
     renderIncomeExpenseBarChart();
     renderRecentTransactions();
+  } else {
+    // Show empty state if no transactions
+    renderEmptyDashboard();
+  }
+  
+  // Listen for storage changes
+  window.addEventListener('storage-change', () => {
+    initDashboard();
   });
+}
+
+function renderEmptyDashboard() {
+  const container = document.getElementById('dashboard-summary');
+  if (container) {
+    container.innerHTML = `<div class="col-span-3 p-8 text-center text-gray-500 dark:text-gray-400">Belum ada transaksi. Silakan tambah data di Chatbot.</div>`;
+  }
 }
 
 /**
