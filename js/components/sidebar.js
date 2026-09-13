@@ -129,17 +129,27 @@ const Sidebar = {
    */
   updateActiveState() {
     const path = window.location.pathname;
-    const currentPage = path.split('/').pop().replace('.html', '') || 'dashboard';
+    let currentPage = path.split('/').pop().replace('.html', '');
+    
+    // Default to dashboard if root or empty
+    if (!currentPage || currentPage === 'index') currentPage = 'dashboard';
     
     document.querySelectorAll('.sidebar-link').forEach(link => {
       const page = link.dataset.page;
       
       if (page === currentPage) {
-        link.classList.add('active', 'bg-primary-100', 'text-primary-700', 'dark:bg-primary-900', 'dark:text-primary-300');
+        link.classList.add('active', 'bg-primary-500', 'text-white', 'dark:bg-primary-600');
         link.classList.remove('text-gray-600', 'dark:text-gray-400', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+        
+        // Add specific icon color if needed
+        const icon = link.querySelector('i');
+        if (icon) icon.classList.add('text-white');
       } else {
-        link.classList.remove('active', 'bg-primary-100', 'text-primary-700', 'dark:bg-primary-900', 'dark:text-primary-300');
+        link.classList.remove('active', 'bg-primary-500', 'text-white', 'dark:bg-primary-600');
         link.classList.add('text-gray-600', 'dark:text-gray-400');
+        
+        const icon = link.querySelector('i');
+        if (icon) icon.classList.remove('text-white');
       }
     });
   },

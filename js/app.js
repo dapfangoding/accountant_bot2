@@ -44,8 +44,8 @@ function initApp() {
   // Initialize dark mode from settings
   Topbar.initDarkMode();
   
-  // Initialize router
-  Router.init(routes);
+  // Make sure sidebar active state matches the current HTML page
+  Sidebar.updateActiveState();
   
   // Listen for storage changes across tabs
   window.addEventListener('storage-change', () => {
