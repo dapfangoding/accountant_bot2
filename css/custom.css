@@ -170,21 +170,53 @@ input:focus, select:focus, textarea:focus {
   /* Global spacing */
   body { padding-bottom: 2rem; }
   
+  main {
+    padding: 1rem !important;
+  }
+  
+  /* Card padding mobile */
+  .rounded-xl, .rounded-2xl {
+    padding: 1rem !important;
+  }
+  
   /* Chatbot adjustments */
   .chat-bubble { max-width: 95% !important; }
   #chat-messages { margin-bottom: 1rem !important; }
   
-  /* Reports adjustments */
-  .grid-cols-1.sm\:grid-cols-2 { gap: 1rem !important; }
+  /* Reports date filters */
+  #report-period, #start-date, #end-date {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem !important;
+  }
   
-  /* Settings adjustments */
+  /* Flex wrap for date inputs */
+  .flex-wrap { flex-wrap: wrap !important; }
+  
+  /* Reports grid responsive */
+  .grid-cols-1 { gap: 1rem !important; }
+  
+  /* Settings and forms */
   .flex.items-center.justify-between {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-  #dark-mode-toggle-settings {
-    margin-left: auto;
+  
+  /* Inputs touch target */
+  input, select, button, textarea {
+    min-height: 44px;
   }
+}
+
+@media (max-width: 480px) {
+  main { padding: 0.75rem !important; }
+  
+  .rounded-xl, .rounded-2xl {
+    padding: 0.75rem !important;
+  }
+  
+  h1 { font-size: 1.125rem !important; }
+  h2 { font-size: 1.25rem !important; }
+  h3 { font-size: 1rem !important; }
 }
 
 /* Sidebar overlay fix */
