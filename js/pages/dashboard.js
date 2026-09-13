@@ -7,13 +7,16 @@ function initDashboard() {
   Sidebar.render();
   Topbar.render('Dashboard');
   
+  const transactions = Storage.getTransactions();
+  console.log('Dashboard - Total transactions:', transactions.length);
+  
   renderSummaryCards();
   renderExpensePieChart();
   renderIncomeExpenseBarChart();
   renderRecentTransactions();
   
-  // Listen for storage changes
   window.addEventListener('storage-change', () => {
+    console.log('Storage changed, re-rendering dashboard');
     initDashboard();
   });
 }
@@ -78,7 +81,10 @@ function renderExpensePieChart() {
   const categories = Storage.getCategories();
   
   const expenses = transactions.filter(t => t.type === 'expense');
+  console.log('Expense transactions:', expenses.length);
+  
   const grouped = Utils.groupByCategory(expenses);
+  console.log('Grouped expenses:', grouped);
   
   const labels = [];
   const data = [];
@@ -96,6 +102,8 @@ function renderExpensePieChart() {
       colors.push('#6b7280');
     }
   });
+
+  console.log('Pie chart data:', { labels, data, colors });
 
   canvas._chartConfig = {
     type: 'doughnut',
@@ -148,6 +156,8 @@ function renderIncomeExpenseBarChart() {
     const dayNum = d.getDate();
     labels.push(`${dayName}, ${dayNum}`);
   });
+
+  console.log('Bar chart data:', { labels, incomeData, expenseData });
 
   const hasData = incomeData.some(v => v > 0) || expenseData.some(v => v > 0);
 
