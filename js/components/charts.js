@@ -44,6 +44,7 @@ const Charts = {
 
     const ctx = canvas.getContext('2d');
     const theme = this.getThemeColors();
+    const isDark = document.documentElement.classList.contains('dark');
 
     this.instances[canvasId] = new Chart(ctx, {
       type: config.type || 'doughnut',
