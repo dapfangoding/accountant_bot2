@@ -39,6 +39,32 @@ function renderSettings() {
           </button>
         </div>
       </div>
+
+      <!-- AI Integration Section -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+          <i class="fas fa-robot text-primary-500"></i>
+          Integrasi AI (Gemini)
+        </h3>
+        <div class="space-y-3">
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            Masukkan Gemini API Key agar chatbot mengenali kalimat natural secara dinamis. Jika kosong, bot memakai pemrosesan offline bawaan.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input 
+              type="password" 
+              id="gemini-api-key" 
+              placeholder="AIzaSy..." 
+              value="${Utils.escapeHtml(settings.geminiApiKey || '')}"
+              class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+            />
+            <button onclick="saveGeminiApiKey()" class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium">
+              <i class="fas fa-save"></i>
+              Simpan Key
+            </button>
+          </div>
+        </div>
+      </div>
       
       <!-- Data Management Section -->
       <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
@@ -142,6 +168,18 @@ function renderSettings() {
     toggleBtn.addEventListener('click', () => Topbar.toggleDarkMode());
   }
 }
+
+/**
+ * Save Gemini API Key
+ */
+window.saveGeminiApiKey = function() {
+  const input = document.getElementById('gemini-api-key');
+  if (!input) return;
+  const settings = Storage.getSettings();
+  settings.geminiApiKey = input.value.trim();
+  Storage.saveSettings(settings);
+  Utils.showToast('Gemini API Key tersimpan', 'success');
+};
 
 /**
  * Export all data to JSON file

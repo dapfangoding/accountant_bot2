@@ -166,6 +166,7 @@ const Storage = {
       darkMode: false,
       currency: 'IDR',
       locale: 'id-ID',
+      geminiApiKey: '',
       version: '1.0.0',
     };
   },

@@ -96,6 +96,19 @@ function addMessage(role, content) {
  * Process user command
  */
 async function processCommand(input) {
+  const settings = Storage.getSettings();
+  
+  // Try Gemini if API Key exists
+  if (settings.geminiApiKey) {
+    try {
+      const geminiResult = await processWithGemini(input, settings.geminiApiKey);
+      if (geminiResult) return geminiResult;
+    } catch (error) {
+      console.error('Gemini error:', error);
+      // Fallback to local regex if Gemini fails
+    }
+  }
+
   const text = input.toLowerCase().trim();
   
   // Intent: Add transaction
@@ -133,6 +146,101 @@ async function processCommand(input) {
     success: false,
     message: 'Maaf, saya tidak memahami perintah tersebut. Coba gunakan salah satu format berikut:\n\n• `tambah pengeluaran 50000 untuk makan siang`\n• `tambah pemasukan 5000000 untuk gaji`\n• `hapus transaksi makan siang`\n• `ubah makan siang jadi 75000`\n• `laporan bulan ini`\n\nKetik `help` untuk bantuan lebih lanjut.',
   };
+}
+
+/**
+ * Process command using Gemini AI Function Calling
+ */
+async function processWithGemini(input, apiKey) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  
+  const categories = Storage.getCategories().map(c => c.name).join(', ');
+  const today = new Date().toISOString().split('T')[0];
+
+  const payload = {
+    contents: [{ parts: [{ text: input }] }],
+    tools: [{
+      function_declarations: [
+        {
+          name: "add_transaction",
+          description: "Menambah transaksi pengeluaran atau pemasukan baru",
+          parameters: {
+            type: "object",
+            properties: {
+              type: { type: "string", enum: ["income", "expense"], description: "Tipe transaksi" },
+              amount: { type: "number", description: "Jumlah uang dalam angka" },
+              description: { type: "string", description: "Deskripsi singkat transaksi" },
+              category: { type: "string", description: `Kategori yang paling cocok. Pilihan: ${categories}` }
+            },
+            required: ["type", "amount", "description"]
+          }
+        },
+        {
+          name: "delete_transaction",
+          description: "Menghapus transaksi berdasarkan kata kunci deskripsi",
+          parameters: {
+            type: "object",
+            properties: {
+              query: { type: "string", description: "Kata kunci transaksi yang ingin dihapus" }
+            },
+            required: ["query"]
+          }
+        },
+        {
+          name: "get_report",
+          description: "Melihat laporan atau ringkasan keuangan",
+          parameters: {
+            type: "object",
+            properties: {
+              period: { type: "string", enum: ["today", "this_month", "all"], description: "Periode laporan" }
+            }
+          }
+        }
+      ]
+    }],
+    system_instruction: {
+      parts: [{ text: `Anda adalah FinBot, asisten keuangan. Hari ini tanggal ${today}. Gunakan function calling untuk memproses perintah user. Jika user hanya menyapa atau bertanya umum, jawablah dengan sopan.` }]
+    }
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json();
+  const candidate = data.candidates?.[0];
+  const call = candidate?.content?.parts?.find(p => p.functionCall);
+
+  if (call) {
+    const { name, args } = call.functionCall;
+    
+    if (name === 'add_transaction') {
+      // Logic manually here or reuse local handlers by simulating input
+      // Reusing local logic is cleaner for consistency
+      const typeStr = args.type === 'income' ? 'pemasukan' : 'pengeluaran';
+      const simInput = `tambah ${typeStr} ${args.amount} untuk ${args.description}`;
+      return handleAddTransaction(simInput);
+    }
+    
+    if (name === 'delete_transaction') {
+      return handleDeleteTransaction(`hapus ${args.query}`);
+    }
+    
+    if (name === 'get_report') {
+      return handleReport(args.period || 'bulan ini');
+    }
+  }
+
+  if (candidate?.content?.parts?.[0]?.text) {
+    return {
+      success: true,
+      message: candidate.content.parts[0].text
+    };
+  }
+
+  return null;
 }
 
 /**
