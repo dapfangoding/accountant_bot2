@@ -11,7 +11,7 @@ function initTransactions() {
   Sidebar.render();
   Topbar.render('Transaksi');
   setupFilters();
-  renderTransactionsTable();
+  applyFilters();
   setupEventListeners();
   
   // Listen for storage changes
