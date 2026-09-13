@@ -172,13 +172,60 @@ function renderSettings() {
 /**
  * Save Gemini API Key
  */
-window.saveGeminiApiKey = function() {
+window.saveGeminiApiKey = async function() {
   const input = document.getElementById('gemini-api-key');
+  const btn = event?.currentTarget || document.querySelector('button[onclick="saveGeminiApiKey()"]');
   if (!input) return;
-  const settings = Storage.getSettings();
-  settings.geminiApiKey = input.value.trim();
-  Storage.saveSettings(settings);
-  Utils.showToast('Gemini API Key tersimpan', 'success');
+
+  const key = input.value.trim();
+
+  // If empty, clear the key directly
+  if (!key) {
+    const settings = Storage.getSettings();
+    settings.geminiApiKey = '';
+    Storage.saveSettings(settings);
+    Utils.showToast('Gemini API Key dihapus (offline mode aktif)', 'info');
+    return;
+  }
+
+  // Validate API key with Gemini endpoint
+  const originalText = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memvalidasi...';
+  }
+
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: 'ping' }] }]
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      const errMsg = data.error?.message || 'API Key tidak valid atau dinonaktifkan';
+      Utils.showToast(`Validasi gagal: ${errMsg}`, 'error');
+      return;
+    }
+
+    // Success: save settings
+    const settings = Storage.getSettings();
+    settings.geminiApiKey = key;
+    Storage.saveSettings(settings);
+    Utils.showToast('API Key valid & berhasil disimpan!', 'success');
+  } catch (error) {
+    console.error('Validation error:', error);
+    Utils.showToast('Gagal terhubung ke Google Gemini. Periksa koneksi internet.', 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  }
 };
 
 /**
