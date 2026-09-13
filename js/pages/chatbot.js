@@ -153,7 +153,7 @@ async function processCommand(input) {
  */
 async function processWithGemini(input, apiKey) {
   const settings = Storage.getSettings();
-  const model = settings.geminiModel || 'gemini-2.5-flash';
+  const model = settings.geminiModel || 'gemini-3.6-flash';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   
   const categories = Storage.getCategories().map(c => c.name).join(', ');

@@ -55,6 +55,7 @@ function renderSettings() {
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Model Gemini</label>
             <select id="gemini-model" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm">
+              <option value="gemini-3.6-flash" ${settings.geminiModel === 'gemini-3.6-flash' ? 'selected' : ''}>Gemini 3.6 Flash (Recommended)</option>
               <option value="gemini-2.5-flash" ${settings.geminiModel === 'gemini-2.5-flash' ? 'selected' : ''}>Gemini 2.5 Flash</option>
               <option value="gemini-1.5-flash" ${settings.geminiModel === 'gemini-1.5-flash' ? 'selected' : ''}>Gemini 1.5 Flash</option>
               <option value="gemini-1.5-pro" ${settings.geminiModel === 'gemini-1.5-pro' ? 'selected' : ''}>Gemini 1.5 Pro</option>

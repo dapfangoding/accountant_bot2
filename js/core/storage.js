@@ -167,7 +167,7 @@ const Storage = {
       currency: 'IDR',
       locale: 'id-ID',
       geminiApiKey: '',
-      geminiModel: 'gemini-2.5-flash',
+      geminiModel: 'gemini-3.6-flash',
       version: '1.0.0',
     };
     return data ? { ...defaults, ...JSON.parse(data) } : defaults;
