@@ -557,11 +557,9 @@ async function handleSendMessage() {
   showTypingIndicator();
   
   // Process command
-  setTimeout(async () => {
-    const result = await processCommand(input);
-    hideTypingIndicator();
-    addMessage('assistant', result.message);
-  }, 500);
+  const result = await processCommand(input);
+  hideTypingIndicator();
+  addMessage('assistant', result.message);
 }
 
 /**
