@@ -40,16 +40,29 @@ function renderSettings() {
         </div>
       </div>
 
-      <!-- AI Integration Section -->
+       <!-- AI Integration Section -->
       <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
           <i class="fas fa-robot text-primary-500"></i>
           Integrasi AI (Gemini)
         </h3>
-        <div class="space-y-3">
+        <div class="space-y-4">
           <p class="text-sm text-gray-500 dark:text-gray-400">
             Masukkan Gemini API Key agar chatbot mengenali kalimat natural secara dinamis. Jika kosong, bot memakai pemrosesan offline bawaan.
           </p>
+          
+          <!-- Model Selection -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Model Gemini</label>
+            <select id="gemini-model" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm">
+              <option value="gemini-2.5-flash" ${settings.geminiModel === 'gemini-2.5-flash' ? 'selected' : ''}>Gemini 2.5 Flash</option>
+              <option value="gemini-1.5-flash" ${settings.geminiModel === 'gemini-1.5-flash' ? 'selected' : ''}>Gemini 1.5 Flash</option>
+              <option value="gemini-1.5-pro" ${settings.geminiModel === 'gemini-1.5-pro' ? 'selected' : ''}>Gemini 1.5 Pro</option>
+              <option value="gemini-pro" ${settings.geminiModel === 'gemini-pro' ? 'selected' : ''}>Gemini Pro</option>
+            </select>
+          </div>
+
+          <!-- API Key Input -->
           <div class="flex flex-col sm:flex-row gap-2">
             <input 
               type="password" 
@@ -60,7 +73,7 @@ function renderSettings() {
             />
             <button onclick="saveGeminiApiKey()" class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium">
               <i class="fas fa-save"></i>
-              Simpan Key
+              Simpan
             </button>
           </div>
         </div>
@@ -174,10 +187,12 @@ function renderSettings() {
  */
 window.saveGeminiApiKey = async function() {
   const input = document.getElementById('gemini-api-key');
+  const modelSelect = document.getElementById('gemini-model');
   const btn = event?.currentTarget || document.querySelector('button[onclick="saveGeminiApiKey()"]');
   if (!input) return;
 
   const key = input.value.trim();
+  const model = modelSelect?.value || 'gemini-2.5-flash';
 
   // If empty, clear the key directly
   if (!key) {
@@ -196,7 +211,7 @@ window.saveGeminiApiKey = async function() {
   }
 
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -215,8 +230,9 @@ window.saveGeminiApiKey = async function() {
     // Success: save settings
     const settings = Storage.getSettings();
     settings.geminiApiKey = key;
+    settings.geminiModel = model;
     Storage.saveSettings(settings);
-    Utils.showToast('API Key valid & berhasil disimpan!', 'success');
+    Utils.showToast(`API Key valid & model ${model} berhasil disimpan!`, 'success');
   } catch (error) {
     console.error('Validation error:', error);
     Utils.showToast('Gagal terhubung ke Google Gemini. Periksa koneksi internet.', 'error');

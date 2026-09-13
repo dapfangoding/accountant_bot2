@@ -152,7 +152,9 @@ async function processCommand(input) {
  * Process command using Gemini AI Function Calling
  */
 async function processWithGemini(input, apiKey) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  const settings = Storage.getSettings();
+  const model = settings.geminiModel || 'gemini-2.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   
   const categories = Storage.getCategories().map(c => c.name).join(', ');
   const today = new Date().toISOString().split('T')[0];
@@ -217,8 +219,6 @@ async function processWithGemini(input, apiKey) {
     const { name, args } = call.functionCall;
     
     if (name === 'add_transaction') {
-      // Logic manually here or reuse local handlers by simulating input
-      // Reusing local logic is cleaner for consistency
       const typeStr = args.type === 'income' ? 'pemasukan' : 'pengeluaran';
       const simInput = `tambah ${typeStr} ${args.amount} untuk ${args.description}`;
       return handleAddTransaction(simInput);

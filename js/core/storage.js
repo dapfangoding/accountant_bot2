@@ -162,13 +162,15 @@ const Storage = {
    */
   getSettings() {
     const data = localStorage.getItem(this.KEYS.SETTINGS);
-    return data ? JSON.parse(data) : {
+    const defaults = {
       darkMode: false,
       currency: 'IDR',
       locale: 'id-ID',
       geminiApiKey: '',
+      geminiModel: 'gemini-2.5-flash',
       version: '1.0.0',
     };
+    return data ? { ...defaults, ...JSON.parse(data) } : defaults;
   },
 
   /**
