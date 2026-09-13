@@ -7,29 +7,15 @@ function initDashboard() {
   Sidebar.render();
   Topbar.render('Dashboard');
   
-  // Update data first
-  const transactions = Storage.getTransactions();
-  if (transactions.length > 0) {
-    renderSummaryCards();
-    renderExpensePieChart();
-    renderIncomeExpenseBarChart();
-    renderRecentTransactions();
-  } else {
-    // Show empty state if no transactions
-    renderEmptyDashboard();
-  }
+  renderSummaryCards();
+  renderExpensePieChart();
+  renderIncomeExpenseBarChart();
+  renderRecentTransactions();
   
   // Listen for storage changes
   window.addEventListener('storage-change', () => {
     initDashboard();
   });
-}
-
-function renderEmptyDashboard() {
-  const container = document.getElementById('dashboard-summary');
-  if (container) {
-    container.innerHTML = `<div class="col-span-3 p-8 text-center text-gray-500 dark:text-gray-400">Belum ada transaksi. Silakan tambah data di Chatbot.</div>`;
-  }
 }
 
 /**
@@ -91,13 +77,9 @@ function renderExpensePieChart() {
   const transactions = Storage.getTransactions();
   const categories = Storage.getCategories();
   
-  // Filter expense transactions
   const expenses = transactions.filter(t => t.type === 'expense');
-  
-  // Group by category
   const grouped = Utils.groupByCategory(expenses);
   
-  // Prepare chart data
   const labels = [];
   const data = [];
   const colors = [];
@@ -115,18 +97,17 @@ function renderExpensePieChart() {
     }
   });
 
-  // Store config for dark mode updates
   canvas._chartConfig = {
     type: 'doughnut',
-    labels,
-    data,
-    colors,
+    labels: labels.length > 0 ? labels : ['Tidak ada data'],
+    data: data.length > 0 ? data : [1],
+    colors: colors.length > 0 ? colors : ['#e5e7eb'],
   };
 
   Charts.createPieChart('expensePieChart', {
-    labels,
-    data,
-    colors,
+    labels: labels.length > 0 ? labels : ['Tidak ada data'],
+    data: data.length > 0 ? data : [1],
+    colors: colors.length > 0 ? colors : ['#e5e7eb'],
     legendPosition: 'bottom',
   });
 }
@@ -141,7 +122,6 @@ function renderIncomeExpenseBarChart() {
   const transactions = Storage.getTransactions();
   const last7Days = Utils.getLastNDays(7);
   
-  // Prepare data for each day
   const incomeData = [];
   const expenseData = [];
   const labels = [];
@@ -163,14 +143,14 @@ function renderIncomeExpenseBarChart() {
     incomeData.push(income);
     expenseData.push(expense);
     
-    // Format date label (e.g., "Sen, 1 Jan")
     const d = new Date(date);
     const dayName = d.toLocaleDateString('id-ID', { weekday: 'short' });
     const dayNum = d.getDate();
     labels.push(`${dayName}, ${dayNum}`);
   });
 
-  // Store config for dark mode updates
+  const hasData = incomeData.some(v => v > 0) || expenseData.some(v => v > 0);
+
   canvas._chartConfig = {
     type: 'bar',
     labels,
@@ -190,23 +170,37 @@ function renderIncomeExpenseBarChart() {
     ],
   };
 
-  Charts.createBarChart('incomeExpenseChart', {
-    labels,
-    datasets: [
-      {
-        label: 'Pemasukan',
-        data: incomeData,
-        backgroundColor: '#22c55e',
-        borderRadius: 4,
-      },
-      {
-        label: 'Pengeluaran',
-        data: expenseData,
-        backgroundColor: '#ef4444',
-        borderRadius: 4,
-      },
-    ],
-  });
+  if (hasData) {
+    Charts.createBarChart('incomeExpenseChart', {
+      labels,
+      datasets: [
+        {
+          label: 'Pemasukan',
+          data: incomeData,
+          backgroundColor: '#22c55e',
+          borderRadius: 4,
+        },
+        {
+          label: 'Pengeluaran',
+          data: expenseData,
+          backgroundColor: '#ef4444',
+          borderRadius: 4,
+        },
+      ],
+    });
+  } else {
+    Charts.createBarChart('incomeExpenseChart', {
+      labels: ['Tidak ada data'],
+      datasets: [
+        {
+          label: 'Pemasukan',
+          data: [0],
+          backgroundColor: '#e5e7eb',
+          borderRadius: 4,
+        },
+      ],
+    });
+  }
 }
 
 /**
@@ -219,7 +213,6 @@ function renderRecentTransactions() {
   const transactions = Storage.getTransactions();
   const categories = Storage.getCategories();
   
-  // Sort by date descending and take first 5
   const recent = transactions
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 5);
@@ -231,7 +224,7 @@ function renderRecentTransactions() {
           <i class="fas fa-receipt text-gray-400 text-2xl"></i>
         </div>
         <p class="text-gray-500 dark:text-gray-400">Belum ada transaksi</p>
-        <a href="#chatbot" class="text-primary-600 dark:text-primary-400 hover:underline mt-2 inline-block">
+        <a href="chatbot.html" class="text-primary-600 dark:text-primary-400 hover:underline mt-2 inline-block">
           Tambah transaksi pertama
         </a>
       </div>
@@ -282,7 +275,7 @@ function renderRecentTransactions() {
       </table>
     </div>
     <div class="mt-4 text-center">
-      <a href="#transactions" class="text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium">
+      <a href="transactions.html" class="text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium">
         Lihat Semua Transaksi <i class="fas fa-arrow-right ml-1"></i>
       </a>
     </div>
