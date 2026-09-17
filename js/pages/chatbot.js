@@ -43,23 +43,41 @@ function renderChatMessages() {
   const container = document.getElementById('chat-messages');
   if (!container) return;
 
-  container.innerHTML = chatMessages.map(msg => `
-    <div class="flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} mb-4 chat-bubble">
-      <div class="max-w-[85%] sm:max-w-[75%]">
-        <div class="${msg.role === 'user' 
-          ? 'bg-primary-600 text-white rounded-2xl rounded-tr-sm' 
-          : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-2xl rounded-tl-sm'
-        } px-4 py-3 shadow-sm">
-          <p class="text-sm whitespace-pre-wrap">${formatMessageContent(msg.content)}</p>
+  container.innerHTML = chatMessages.map(msg => {
+    const isUser = msg.role === 'user';
+    const time = new Date(msg.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    
+    if (isUser) {
+      return `
+        <div class="flex justify-end w-full pl-10 message-wrapper">
+          <div class="max-w-[85%] sm:max-w-[70%] bg-gradient-to-br from-primary-container to-primary text-on-primary rounded-2xl rounded-tr-sm p-3.5 shadow-md flex flex-col gap-1.5">
+            <p class="text-sm leading-relaxed text-on-primary whitespace-pre-wrap">${formatMessageContent(msg.content)}</p>
+            <div class="flex items-center justify-end gap-1 text-on-primary/80 self-end">
+              <span class="text-xs">${time}</span>
+              <i class="fas fa-check-double text-xs"></i>
+            </div>
+          </div>
         </div>
-        <p class="text-xs text-gray-400 mt-1 ${msg.role === 'user' ? 'text-right' : 'text-left'}">
-          ${new Date(msg.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
-        </p>
-      </div>
-    </div>
-  `).join('');
+      `;
+    } else {
+      return `
+        <div class="flex justify-start w-full pr-6 items-start gap-2.5 message-wrapper">
+          <div class="w-8 h-8 rounded-full bg-primary-fixed dark:bg-primary flex items-center justify-center flex-shrink-0 text-on-primary-fixed dark:text-on-primary mt-1 shadow-xs">
+            <i class="fas fa-robot text-sm"></i>
+          </div>
+          <div class="flex-1 max-w-[92%] sm:max-w-[82%] flex flex-col gap-2">
+            <div class="bg-surface-container-lowest/90 dark:bg-gray-800/90 backdrop-blur-xl border border-outline-variant/30 dark:border-outline/20 rounded-2xl rounded-tl-sm p-4 shadow-sm text-on-surface dark:text-gray-200 flex flex-col gap-2">
+              <p class="text-sm leading-relaxed whitespace-pre-wrap">${formatMessageContent(msg.content)}</p>
+              <div class="flex justify-end pt-1">
+                <span class="text-xs text-on-surface-variant/70 dark:text-gray-500">${time}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  }).join('');
 
-  // Scroll to bottom
   container.scrollTop = container.scrollHeight;
 }
 
