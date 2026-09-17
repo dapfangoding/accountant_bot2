@@ -165,43 +165,67 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
+/* Luxury Theme Override - FinBot AI Pro / Google Stitch Theme */
+:root {
+  --primary: #006948;
+  --primary-container: #00855d;
+  --secondary: #006c49;
+  --background: #faf8ff;
+  --surface: #faf8ff;
+  --on-surface: #131b2e;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Green Emerald Stitch Palette */
+.bg-primary-500, .bg-primary-600 {
+  background-color: #006948 !important;
+}
+.bg-primary-700 {
+  background-color: #005137 !important;
+}
+.text-primary-500, .text-primary-600 {
+  color: #006948 !important;
+}
+.text-primary-700 {
+  color: #005137 !important;
+}
+.border-primary-500 {
+  border-color: #006948 !important;
+}
+.focus\:ring-primary-500:focus {
+  --tw-ring-color: #006948 !important;
+}
+
+/* Glassmorphism / Frosted Card & Chat Styles */
+.chat-bubble {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 /* Mobile Optimizations */
 @media (max-width: 640px) {
-  /* Global spacing */
   body { padding-bottom: 2rem; }
-  
-  main {
-    padding: 1rem !important;
-  }
-  
-  /* Card padding mobile */
-  .rounded-xl, .rounded-2xl {
-    padding: 1rem !important;
-  }
-  
-  /* Chatbot adjustments */
+  main { padding: 1rem !important; }
+  .rounded-xl, .rounded-2xl { padding: 1rem !important; }
   .chat-bubble { max-width: 95% !important; }
   #chat-messages { margin-bottom: 1rem !important; }
   
-  /* Reports date filters */
   #report-period, #start-date, #end-date {
     font-size: 0.875rem;
     padding: 0.5rem 0.75rem !important;
   }
   
-  /* Flex wrap for date inputs */
   .flex-wrap { flex-wrap: wrap !important; }
-  
-  /* Reports grid responsive */
   .grid-cols-1 { gap: 1rem !important; }
   
-  /* Settings and forms */
   .flex.items-center.justify-between {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
   
-  /* Inputs touch target */
   input, select, button, textarea {
     min-height: 44px;
   }
@@ -209,11 +233,7 @@ input:focus, select:focus, textarea:focus {
 
 @media (max-width: 480px) {
   main { padding: 0.75rem !important; }
-  
-  .rounded-xl, .rounded-2xl {
-    padding: 0.75rem !important;
-  }
-  
+  .rounded-xl, .rounded-2xl { padding: 0.75rem !important; }
   h1 { font-size: 1.125rem !important; }
   h2 { font-size: 1.25rem !important; }
   h3 { font-size: 1rem !important; }
