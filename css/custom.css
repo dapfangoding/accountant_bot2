@@ -165,38 +165,54 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
-/* Luxury Theme Override - FinBot AI Pro / Google Stitch Theme */
+/* Luxury Theme Override - FinBot AI Pro */
 :root {
   --primary: #006948;
+  --on-primary: #ffffff;
   --primary-container: #00855d;
-  --secondary: #006c49;
-  --background: #faf8ff;
+  --on-primary-container: #ffffff;
   --surface: #faf8ff;
   --on-surface: #131b2e;
 }
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+/* Dark Mode Overrides */
+.dark {
+  --primary: #85f8c4;
+  --on-primary: #003824;
+  --primary-container: #005137;
+  --on-primary-container: #a3f4ca;
+  --surface: #1a1c1a;
+  --on-surface: #e1e3e1;
 }
 
-/* Green Emerald Stitch Palette */
-.bg-primary-500, .bg-primary-600 {
-  background-color: #006948 !important;
+body {
+  background-color: var(--surface);
+  color: var(--on-surface);
 }
-.bg-primary-700 {
-  background-color: #005137 !important;
+
+/* Icons/Buttons in Dark Mode */
+.dark .text-on-surface, .dark .text-on-surface-variant {
+  color: #e1e3e1 !important;
 }
-.text-primary-500, .text-primary-600 {
-  color: #006948 !important;
+
+/* Fix for Chatbot Quick Action Chips */
+.dark .bg-surface-container-lowest {
+  background-color: #2d2f2d !important;
+  color: #e1e3e1 !important;
 }
-.text-primary-700 {
-  color: #005137 !important;
+
+/* Fix for AI Bot Avatar/Icons */
+.dark .bg-primary-fixed {
+  background-color: #85f8c4 !important;
+  color: #003824 !important;
 }
-.border-primary-500 {
-  border-color: #006948 !important;
+
+/* Utility to force icon color */
+.icon-theme {
+  color: var(--primary);
 }
-.focus\:ring-primary-500:focus {
-  --tw-ring-color: #006948 !important;
+.dark .icon-theme {
+  color: var(--primary);
 }
 
 /* Glassmorphism / Frosted Card & Chat Styles */
