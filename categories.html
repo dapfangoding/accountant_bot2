@@ -142,10 +142,10 @@
       <!-- Tab Switcher -->
       <section class="bg-surface-container-low p-1 rounded-lg flex items-center border border-outline-variant/30">
         <button class="flex-1 py-2.5 rounded text-label-md font-bold bg-surface-container-high text-primary text-center shadow-sm transition-all" id="tab-expense">
-          Pengeluaran (8)
+          Pengeluaran (0)
         </button>
         <button class="flex-1 py-2.5 rounded text-label-md text-on-surface-variant hover:text-on-surface text-center transition-all" id="tab-income">
-          Pemasukan (4)
+          Pemasukan (0)
         </button>
       </section>
 
@@ -223,63 +223,83 @@
         </button>
       </div>
 
-      <!-- Add Category Form -->
-      <section id="add-category-form" class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 space-y-4">
-        <h3 class="text-headline-sm font-bold text-on-surface">Tambah/Edit Kategori</h3>
-        
-        <div class="space-y-3">
-          <div>
-            <label class="block text-label-md text-on-surface-variant mb-1">Nama Kategori</label>
-            <input type="text" id="category-name" placeholder="Contoh: Biaya Penelitian" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
+      <!-- Add/Edit Category Modal -->
+      <div id="category-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <section id="add-category-form" class="bg-surface-container-low rounded-lg p-5 border border-outline-variant/30 space-y-4 w-full max-w-md shadow-2xl relative">
+          <!-- Close button -->
+          <button onclick="closeCategoryModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          
+          <h3 id="modal-title" class="text-headline-sm font-bold text-on-surface">Tambah Kategori</h3>
+          
+          <div class="space-y-3">
             <div>
-              <label class="block text-label-md text-on-surface-variant mb-1">Tipe</label>
-              <select id="category-type" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
-                <option value="expense">Pengeluaran</option>
-                <option value="income">Pemasukan</option>
-              </select>
+              <label class="block text-label-md text-on-surface-variant mb-1">Nama Kategori</label>
+              <input type="text" id="category-name" placeholder="Contoh: Biaya Penelitian" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
             </div>
-            <div>
-              <label class="block text-label-md text-on-surface-variant mb-1">Warna</label>
-              <input type="color" id="category-color" value="#ef4444" class="w-full h-10 bg-surface-container border border-outline-variant/50 rounded cursor-pointer">
-            </div>
-          </div>
 
-          <div>
-            <label class="block text-label-md text-on-surface-variant mb-1">Icon (Font Awesome)</label>
-            <input type="text" id="category-icon" placeholder="fa-folder" value="fa-folder" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
-          </div>
-
-          <div class="border-t border-outline-variant/30 pt-3">
-            <div class="flex items-center justify-between mb-3">
+            <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-label-lg font-bold text-on-surface">Pembatasan Budget</label>
-                <p class="text-label-md text-on-surface-variant">Tetapkan batas pengeluaran kategori ini</p>
+                <label class="block text-label-md text-on-surface-variant mb-1">Tipe</label>
+                <select id="category-type" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
+                  <option value="expense">Pengeluaran</option>
+                  <option value="income">Pemasukan</option>
+                </select>
               </div>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="category-budget-enabled" class="sr-only peer" onchange="toggleBudgetInput()">
-                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-              </label>
+              <div>
+                <label class="block text-label-md text-on-surface-variant mb-1">Warna</label>
+                <input type="color" id="category-color" value="#ef4444" class="w-full h-10 bg-surface-container border border-outline-variant/50 rounded cursor-pointer">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-label-md text-on-surface-variant mb-1">Icon (Font Awesome)</label>
+              <input type="text" id="category-icon" placeholder="fa-folder" value="fa-folder" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
+            </div>
+
+            <div class="border-t border-outline-variant/30 pt-3">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <label class="block text-label-lg font-bold text-on-surface">Pembatasan Budget</label>
+                  <p class="text-label-md text-on-surface-variant">Tetapkan batas pengeluaran kategori ini</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="category-budget-enabled" class="sr-only peer" onchange="toggleBudgetInput()">
+                  <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+              </div>
+              
+              <div id="budget-input-container" class="hidden">
+                <div class="flex items-center justify-between mb-1">
+                  <label class="block text-label-md text-on-surface-variant">Limit Budget (Rp)</label>
+                  <span id="budget-limit-type" class="text-xs text-primary font-bold">Limit Pengeluaran</span>
+                </div>
+                <input type="number" id="category-budget" placeholder="0" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <button onclick="addCategory()" id="add-category-btn" class="flex-1 py-2.5 bg-primary hover:bg-primary-container text-on-primary font-bold rounded transition-all active:scale-95">
+                Simpan
+              </button>
+              <button onclick="saveCategory()" id="save-category-btn" class="flex-1 py-2.5 bg-secondary-container hover:bg-primary-container text-on-secondary-container font-bold rounded transition-all active:scale-95 hidden">
+                Update
+              </button>
+              <button onclick="closeCategoryModal()" class="flex-1 py-2.5 bg-surface-container hover:bg-surface-container-highest text-on-surface-variant font-bold rounded transition-all active:scale-95">
+                Batal
+              </button>
             </div>
             
-            <div id="budget-input-container" class="hidden">
-              <label class="block text-label-md text-on-surface-variant mb-1">Limit Budget (Rp)</label>
-              <input type="number" id="category-budget" placeholder="0" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
+            <div id="delete-category-btn-container" class="hidden pt-2 border-t border-outline-variant/20">
+              <button onclick="deleteCurrentCategory()" class="w-full py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold rounded transition-all active:scale-95 flex items-center justify-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+                <span>Hapus Kategori</span>
+              </button>
             </div>
           </div>
-
-          <div class="flex gap-2">
-            <button onclick="addCategory()" class="flex-1 py-2.5 bg-primary hover:bg-primary-container text-on-primary font-bold rounded transition-all active:scale-95">
-              Simpan
-            </button>
-            <button onclick="saveCategory()" id="save-category-btn" class="flex-1 py-2.5 bg-secondary-container hover:bg-primary-container text-on-secondary-container font-bold rounded transition-all active:scale-95">
-              Update
-            </button>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <!-- Category Items -->
       <div id="categories-list" class="space-y-2">
@@ -287,7 +307,7 @@
       </div>
 
       <!-- Create Category Button -->
-      <button class="w-full py-3.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant/30 text-label-lg font-bold transition-all active:scale-98 flex items-center justify-center gap-2" onclick="Router.navigate('chatbot')">
+      <button class="w-full py-3.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant/30 text-label-lg font-bold transition-all active:scale-98 flex items-center justify-center gap-2" onclick="openCategoryModal('add')">
         <span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
         <span>Buat Kategori Baru</span>
       </button>
@@ -302,20 +322,5 @@
   <script src="js/components/topbar.js"></script>
   <script src="js/pages/categories.js"></script>
   <script src="js/app.js"></script>
-
-  <script>
-    document.getElementById('tab-expense').addEventListener('click', function() {
-      this.classList.add('bg-surface-container-high', 'text-primary', 'font-bold', 'shadow-sm');
-      this.classList.remove('text-on-surface-variant');
-      document.getElementById('tab-income').classList.remove('bg-surface-container-high', 'text-primary', 'font-bold', 'shadow-sm');
-      document.getElementById('tab-income').classList.add('text-on-surface-variant');
-    });
-    document.getElementById('tab-income').addEventListener('click', function() {
-      this.classList.add('bg-surface-container-high', 'text-primary', 'font-bold', 'shadow-sm');
-      this.classList.remove('text-on-surface-variant');
-      document.getElementById('tab-expense').classList.remove('bg-surface-container-high', 'text-primary', 'font-bold', 'shadow-sm');
-      document.getElementById('tab-expense').classList.add('text-on-surface-variant');
-    });
-  </script>
 </body>
 </html>
