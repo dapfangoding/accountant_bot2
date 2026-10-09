@@ -1,0 +1,281 @@
+/* Custom CSS - Additional styles beyond Tailwind */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Chat bubble animations */
+.chat-bubble {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glass effect for cards */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-effect {
+  background: rgba(31, 41, 55, 0.5);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* Loading spinner */
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+.dark .spinner {
+  border: 3px solid #1f2937;
+  border-top: 3px solid #3b82f6;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Table row hover transition */
+.table-row-hover {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Badge pulse animation */
+.badge-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Mobile sidebar overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  display: none;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+/* Form input focus ring */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #3b82f6;
+}
+
+/* Button active state */
+.btn-active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease-in-out;
+}
+
+/* Card shadow on hover */
+.card-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.dark .card-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 
+              0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+}
+
+/* Accessibility - reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Luxury Theme Override - FinBot AI Pro */
+:root {
+  --primary: #006948;
+  --on-primary: #ffffff;
+  --primary-container: #00855d;
+  --on-primary-container: #ffffff;
+  --surface: #faf8ff;
+  --on-surface: #131b2e;
+}
+
+/* Dark Mode Overrides */
+.dark {
+  --primary: #85f8c4;
+  --on-primary: #003824;
+  --primary-container: #005137;
+  --on-primary-container: #a3f4ca;
+  --surface: #1a1c1a;
+  --on-surface: #e1e3e1;
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--on-surface);
+}
+
+/* Icons/Buttons in Dark Mode */
+.dark .text-on-surface, .dark .text-on-surface-variant {
+  color: #e1e3e1 !important;
+}
+
+/* Fix for Chatbot Quick Action Chips */
+.dark .bg-surface-container-lowest {
+  background-color: #2d2f2d !important;
+  color: #e1e3e1 !important;
+}
+
+/* Fix for AI Bot Avatar/Icons */
+.dark .bg-primary-fixed {
+  background-color: #85f8c4 !important;
+  color: #003824 !important;
+}
+
+/* Utility to force icon color */
+.icon-theme {
+  color: var(--primary);
+}
+.dark .icon-theme {
+  color: var(--primary);
+}
+
+/* Glassmorphism / Frosted Card & Chat Styles */
+.chat-bubble {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Hide scrollbar utility */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+  body { padding-bottom: 2rem; }
+  main { padding: 1rem !important; }
+  .rounded-xl, .rounded-2xl { padding: 1rem !important; }
+  .chat-bubble { max-width: 95% !important; }
+  #chat-messages { margin-bottom: 1rem !important; }
+  
+  #report-period, #start-date, #end-date {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem !important;
+  }
+  
+  .flex-wrap { flex-wrap: wrap !important; }
+  .grid-cols-1 { gap: 1rem !important; }
+  
+  .flex.items-center.justify-between {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  input, select, button, textarea {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  main { padding: 0.75rem !important; }
+  .rounded-xl, .rounded-2xl { padding: 0.75rem !important; }
+  h1 { font-size: 1.125rem !important; }
+  h2 { font-size: 1.25rem !important; }
+  h3 { font-size: 1rem !important; }
+}
+
+/* Sidebar overlay fix */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 40;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}

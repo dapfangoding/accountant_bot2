@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinBot AI - Laporan & Analitik Keuangan</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface": "#0b1326",
+            "surface-dim": "#0b1326",
+            "surface-bright": "#31394d",
+            "surface-container-lowest": "#060e20",
+            "surface-container-low": "#131b2e",
+            "surface-container": "#171f33",
+            "surface-container-high": "#222a3d",
+            "surface-container-highest": "#2d3449",
+            "on-surface": "#dae2fd",
+            "on-surface-variant": "#bbcabf",
+            "inverse-surface": "#dae2fd",
+            "inverse-on-surface": "#283044",
+            "outline": "#86948a",
+            "outline-variant": "#3c4a42",
+            "surface-tint": "#4edea3",
+            "primary": "#4edea3",
+            "on-primary": "#003824",
+            "primary-container": "#10b981",
+            "on-primary-container": "#00422b",
+            "inverse-primary": "#006c49",
+            "secondary": "#95d3ba",
+            "on-secondary": "#003829",
+            "secondary-container": "#0b513d",
+            "on-secondary-container": "#83c2a9",
+            "tertiary": "#45dfa4",
+            "on-tertiary": "#003825",
+            "tertiary-container": "#00b982",
+            "on-tertiary-container": "#00422c",
+            "error": "#ffb4ab",
+            "on-error": "#690005",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6",
+            "primary-fixed": "#6ffbbe",
+            "primary-fixed-dim": "#4edea3",
+            "on-primary-fixed": "#002113",
+            "on-primary-fixed-variant": "#005236",
+            "secondary-fixed": "#b0f0d6",
+            "secondary-fixed-dim": "#95d3ba",
+            "on-secondary-fixed": "#002117",
+            "on-secondary-fixed-variant": "#0b513d",
+            "tertiary-fixed": "#68fcbf",
+            "tertiary-fixed-dim": "#45dfa4",
+            "on-tertiary-fixed": "#002114",
+            "on-tertiary-fixed-variant": "#005137",
+            "background": "#0b1326",
+            "on-background": "#dae2fd"
+          },
+          "borderRadius": {
+            "sm": "0.25rem",
+            "DEFAULT": "0.5rem",
+            "md": "0.75rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-sm": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "space-xl": "1.5rem",
+            "space-2xl": "2rem",
+            "gutter": "1rem",
+            "margin": "1rem",
+            "margin-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "jakarta": ["Plus Jakarta Sans", "system-ui", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-caps": ["10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "display-currency": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-currency-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    .material-symbols-outlined.filled {
+      font-variation-settings: 'FILL' 1;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-28">
+  <!-- Sidebar Container -->
+  <div id="sidebar-container"></div>
+  
+  <!-- Main Content Area -->
+  <div class="lg:pl-64">
+    <!-- Topbar Container -->
+    <div id="topbar-container"></div>
+    
+    <!-- Main Content -->
+    <main class="pt-20 px-4 max-w-4xl mx-auto space-y-5 pb-32 lg:pb-8">
+      <!-- Period Selector Tabs -->
+      <section class="bg-surface-container-low/80 p-1 rounded-lg border border-outline-variant/30">
+        <div class="grid grid-cols-4 gap-1 text-center">
+          <button class="py-2 rounded text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-all" onclick="setPeriod('week')">Mingguan</button>
+          <button class="py-2 rounded text-label-md font-label-md font-bold bg-primary-container text-on-primary-container shadow-sm transition-all" onclick="setPeriod('month')">Bulanan</button>
+          <button class="py-2 rounded text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-all" onclick="setPeriod('year')">Tahunan</button>
+          <button class="py-2 rounded text-label-md font-label-md text-on-surface-variant hover:text-on-surface transition-all" onclick="setPeriod('custom')">Kustom</button>
+        </div>
+      </section>
+
+      <!-- Financial Health Card -->
+      <section class="relative overflow-hidden rounded-lg bg-surface-container-low border border-outline-variant/30 p-5 shadow-sm">
+        <div class="absolute -top-16 -right-16 w-36 h-36 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[18px]" data-icon="health_and_safety">health_and_safety</span>
+            <span class="text-label-caps font-label-caps text-on-surface-variant">KESEHATAN FINANSIAL</span>
+          </div>
+          <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/50 border border-primary/20">
+            <span class="material-symbols-outlined text-primary text-[12px] filled" data-icon="verified_user">verified_user</span>
+            <span class="text-label-caps font-label-caps text-primary">256-BIT SECURE</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="relative w-24 h-24 flex items-center justify-center">
+            <div class="absolute w-20 h-20 rounded-full bg-gradient-to-r from-primary to-tertiary opacity-20"></div>
+            <div class="text-center relative z-10">
+              <div class="text-display-currency-mobile font-bold text-primary">84%</div>
+              <div class="text-label-caps text-on-surface-variant">Sangat Baik</div>
+            </div>
+          </div>
+          <div class="flex-1">
+            <p class="text-body-md text-on-surface mb-2">Manajemen keuangan Anda termasuk dalam kategori <span class="font-bold text-primary">Sangat Baik</span>. Pertahankan kebiasaan positif ini!</p>
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-label-md">
+                <span class="text-on-surface-variant">Pengeluaran Terkontrol</span>
+                <span class="text-primary font-bold">73.5%</span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+                <div class="h-full bg-primary" style="width: 73.5%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary Stats Grid -->
+      <div id="report-summary" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Stats rendered by JS -->
+      </div>
+
+      <!-- Charts Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <!-- Trend Chart -->
+        <div class="rounded-lg bg-surface-container-low border border-outline-variant/30 p-4 shadow-sm">
+          <h3 class="text-headline-sm font-bold text-on-surface mb-4">Tren Harian</h3>
+          <div class="h-64">
+            <canvas id="trendChart"></canvas>
+          </div>
+        </div>
+        
+        <!-- Category Breakdown -->
+        <div class="rounded-lg bg-surface-container-low border border-outline-variant/30 p-4 shadow-sm">
+          <h3 class="text-headline-sm font-bold text-on-surface mb-4">Pengeluaran per Kategori</h3>
+          <div id="category-breakdown" class="space-y-3">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Table -->
+      <div class="rounded-lg bg-surface-container-low border border-outline-variant/30 p-4 shadow-sm overflow-x-auto">
+        <h3 class="text-headline-sm font-bold text-on-surface mb-4">Detail Transaksi</h3>
+        <div id="detailed-breakdown" class="space-y-2">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/components/sidebar.js"></script>
+  <script src="js/components/topbar.js"></script>
+  <script src="js/components/charts.js"></script>
+  <script src="js/pages/reports.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    function setPeriod(period) {
+      const buttons = document.querySelectorAll('section button');
+      buttons.forEach((btn, idx) => {
+        btn.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+        btn.classList.add('text-on-surface-variant');
+      });
+      if (period === 'week') buttons[0].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+      if (period === 'month') buttons[1].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+      if (period === 'year') buttons[2].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+      if (period === 'custom') buttons[3].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+    }
+  </script>
+</body>
+</html>
