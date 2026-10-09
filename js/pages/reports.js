@@ -12,11 +12,13 @@ function initReports() {
   renderReportSummary();
   renderCategoryBreakdown();
   renderTrendChart();
+  renderDetailedBreakdown();
   
   window.addEventListener('storage-change', () => {
     renderReportSummary();
     renderCategoryBreakdown();
     renderTrendChart();
+    renderDetailedBreakdown();
   });
 }
 
@@ -118,35 +120,35 @@ function renderReportSummary() {
   const balance = Utils.calculateBalance(transactions);
   
   container.innerHTML = `
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
         <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-            <i class="fas fa-wallet text-blue-600 dark:text-blue-400"></i>
+          <div class="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-base" data-icon="account_balance">account_balance</span>
           </div>
-          <span class="text-sm text-gray-500 dark:text-gray-400">Saldo Bersih</span>
+          <span class="text-label-md text-on-surface-variant">Saldo Bersih</span>
         </div>
-        <p class="text-xl font-bold text-gray-800 dark:text-white">${Utils.formatRupiah(balance.balance)}</p>
+        <p class="text-headline-sm font-bold text-on-surface">${Utils.formatRupiah(balance.balance)}</p>
       </div>
-      
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+
+      <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
         <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-            <i class="fas fa-arrow-down text-green-600 dark:text-green-400"></i>
+          <div class="w-8 h-8 rounded-lg bg-green-950/40 text-green-400 flex items-center justify-center">
+            <span class="material-symbols-outlined text-base" data-icon="south_west">south_west</span>
           </div>
-          <span class="text-sm text-gray-500 dark:text-gray-400">Total Pemasukan</span>
+          <span class="text-label-md text-on-surface-variant">Total Pemasukan</span>
         </div>
-        <p class="text-xl font-bold text-green-600 dark:text-green-400">${Utils.formatRupiah(balance.income)}</p>
+        <p class="text-headline-sm font-bold text-green-400">${Utils.formatRupiah(balance.income)}</p>
       </div>
-      
-      <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+
+      <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
         <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
-            <i class="fas fa-arrow-up text-red-600 dark:text-red-400"></i>
+          <div class="w-8 h-8 rounded-lg bg-red-950/40 text-red-400 flex items-center justify-center">
+            <span class="material-symbols-outlined text-base" data-icon="north_east">north_east</span>
           </div>
-          <span class="text-sm text-gray-500 dark:text-gray-400">Total Pengeluaran</span>
+          <span class="text-label-md text-on-surface-variant">Total Pengeluaran</span>
         </div>
-        <p class="text-xl font-bold text-red-600 dark:text-red-400">${Utils.formatRupiah(balance.expense)}</p>
+        <p class="text-headline-sm font-bold text-red-400">${Utils.formatRupiah(balance.expense)}</p>
       </div>
     </div>
   `;
@@ -184,7 +186,7 @@ function renderCategoryBreakdown() {
     .slice(0, 5); // Top 5
   
   container.innerHTML = `
-    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Top 5 Pengeluaran per Kategori</h3>
+    <h3 class="text-headline-sm font-bold text-on-surface mb-4">Pengeluaran per Kategori</h3>
     <div class="space-y-3">
       ${sorted.map(([catId, info]) => {
         const category = categories.find(c => c.id === catId) || { name: 'Lainnya', color: '#6b7280' };
@@ -195,15 +197,15 @@ function renderCategoryBreakdown() {
             <div class="flex items-center justify-between mb-1">
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full" style="background-color: ${category.color}"></div>
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">${category.name}</span>
+                <span class="text-label-md font-label-md text-on-surface">${category.name}</span>
               </div>
               <div class="text-right">
-                <span class="text-sm font-semibold text-gray-800 dark:text-white">${Utils.formatRupiah(info.total)}</span>
-                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">(${percentage}%)</span>
+                <span class="text-label-md font-label-md font-bold text-on-surface">${Utils.formatRupiah(info.total)}</span>
+                <span class="text-label-caps text-on-surface-variant ml-2">(${percentage}%)</span>
               </div>
             </div>
-            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-              <div class="h-2 rounded-full transition-all duration-500" style="width: ${percentage}%; background-color: ${category.color}"></div>
+            <div class="w-full bg-surface-container-highest rounded-full h-2 overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-500" style="width: ${percentage}%; background-color: ${category.color}"></div>
             </div>
           </div>
         `;
@@ -211,6 +213,110 @@ function renderCategoryBreakdown() {
     </div>
   `;
 }
+
+/**
+ * Render detailed breakdown table
+ */
+function renderDetailedBreakdown() {
+  const container = document.getElementById('detailed-breakdown');
+  if (!container) return;
+  
+  const transactions = getFilteredTransactions();
+  const categories = Storage.getCategories();
+  
+  if (transactions.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-8 bg-surface-container-low rounded-lg border border-outline-variant/30">
+        <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mx-auto mb-4 border border-outline-variant/20">
+          <span class="material-symbols-outlined text-primary text-[28px]" data-icon="receipt_long">receipt_long</span>
+        </div>
+        <h3 class="text-headline-sm font-bold text-on-surface mb-2">Belum ada transaksi</h3>
+        <p class="text-body-sm text-on-surface-variant">Tidak ada transaksi pada periode yang dipilih.</p>
+      </div>
+    `;
+    return;
+  }
+  
+  const sorted = transactions
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  container.innerHTML = `
+    <div class="rounded-lg border border-outline-variant/20 overflow-hidden">
+      <table class="w-full text-left">
+        <thead class="bg-surface-container-highest/50 text-on-surface-variant text-label-caps">
+          <tr>
+            <th class="py-3 px-4 font-bold">Tanggal</th>
+            <th class="py-3 px-4 font-bold">Deskripsi</th>
+            <th class="py-3 px-4 font-bold">Kategori</th>
+            <th class="py-3 px-4 text-right font-bold">Jumlah</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/10">
+          ${sorted.map(t => {
+            const category = categories.find(c => c.id === t.categoryId) || { name: 'Lainnya', color: '#6b7280', icon: 'fa-folder' };
+            const isIncome = t.type === 'income';
+            return `
+              <tr class="hover:bg-surface-container/50 transition-colors">
+                <td class="py-3 px-4 text-body-sm text-on-surface-variant">${Utils.formatDate(t.date, 'long')}</td>
+                <td class="py-3 px-4 text-body-sm text-on-surface">${Utils.escapeHtml(t.description)}</td>
+                <td class="py-3 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-label-md ${isIncome ? 'bg-green-950/40 text-green-400' : 'bg-red-950/40 text-red-400'}">
+                    <span class="material-symbols-outlined text-[14px]" data-icon="${isIncome ? 'south_west' : 'north_east'}">${isIncome ? 'south_west' : 'north_east'}</span>
+                    ${category.name}
+                  </span>
+                </td>
+                <td class="py-3 px-4 text-right text-body-sm font-bold ${isIncome ? 'text-green-400' : 'text-red-400'}">
+                  ${isIncome ? '+' : '-'}${Utils.formatRupiah(t.amount)}
+                </td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+/**
+ * Export filtered transactions to Excel
+ */
+window.exportToExcel = function() {
+  const transactions = getFilteredTransactions();
+  const categories = Storage.getCategories();
+  
+  const data = transactions.map(t => {
+    const category = categories.find(c => c.id === t.categoryId) || { name: 'Lainnya' };
+    return {
+      'No': '',
+      'Tanggal': Utils.formatDate(t.date, 'long'),
+      'Tipe': t.type === 'income' ? 'Pemasukan' : 'Pengeluaran',
+      'Kategori': category.name,
+      'Deskripsi': t.description,
+      'Jumlah': t.type === 'income' ? t.amount : -t.amount,
+    };
+  });
+  
+  data.forEach((row, i) => row['No'] = i + 1);
+  
+  const ws = XLSX.utils.json_to_sheet(data);
+  ws['!cols'] = [
+    { wch: 5 },
+    { wch: 15 },
+    { wch: 12 },
+    { wch: 15 },
+    { wch: 30 },
+    { wch: 15 },
+  ];
+  
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Laporan');
+  
+  const filename = `laporan_keuangan_${new Date().toISOString().split('T')[0]}.xlsx`;
+  XLSX.writeFile(wb, filename);
+  
+  Utils.showToast('File Excel berhasil diunduh', 'success');
+};
 
 /**
  * Render trend line chart
