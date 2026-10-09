@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FinBot AI - Chatbot Asisten Keuangan</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface": "#0b1326",
+            "secondary-fixed-dim": "#95d3ba",
+            "surface-container-low": "#131b2e",
+            "on-secondary-fixed": "#002117",
+            "on-primary": "#003824",
+            "on-tertiary-container": "#00422c",
+            "on-primary-fixed": "#002113",
+            "on-primary-container": "#00422b",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-fixed": "#002114",
+            "on-surface-variant": "#bbcabf",
+            "primary-container": "#10b981",
+            "secondary-fixed": "#b0f0d6",
+            "tertiary-container": "#00b982",
+            "surface-bright": "#31394d",
+            "tertiary": "#45dfa4",
+            "on-primary-fixed-variant": "#005236",
+            "on-secondary": "#003829",
+            "on-error": "#690005",
+            "surface-container": "#171f33",
+            "error": "#ffb4ab",
+            "surface-container-high": "#222a3d",
+            "on-secondary-fixed-variant": "#0b513d",
+            "background": "#0b1326",
+            "surface-variant": "#2d3449",
+            "inverse-primary": "#006c49",
+            "inverse-on-surface": "#283044",
+            "tertiary-fixed": "#68fcbf",
+            "on-secondary-container": "#83c2a9",
+            "surface-container-lowest": "#060e20",
+            "error-container": "#93000a",
+            "secondary": "#95d3ba",
+            "on-background": "#dae2fd",
+            "surface-dim": "#0b1326",
+            "primary-fixed-dim": "#4edea3",
+            "tertiary-fixed-dim": "#45dfa4",
+            "outline": "#86948a",
+            "on-tertiary-fixed-variant": "#005137",
+            "primary-fixed": "#6ffbbe",
+            "inverse-surface": "#dae2fd",
+            "surface-container-highest": "#2d3449",
+            "on-tertiary": "#003825",
+            "on-surface": "#dae2fd",
+            "secondary-container": "#0b513d",
+            "surface-tint": "#4edea3",
+            "outline-variant": "#3c4a42",
+            "primary": "#4edea3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-sm": "0.75rem",
+            "space-xl": "1.5rem",
+            "margin-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-2xl": "2rem",
+            "space-sm": "0.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem",
+            "gutter": "1rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-caps": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "display-currency": ["Plus Jakarta Sans"],
+            "display-currency-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-caps": ["10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "display-currency": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "display-currency-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+
+    /* Ambient pulse glow for AI avatar */
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(78, 222, 163, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 7px rgba(78, 222, 163, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(78, 222, 163, 0); }
+    }
+    .pulse-ring-emerald {
+      animation: pulseRing 2.4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+
+    /* Hide scrollbar for clean chip rail */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Glass card backdrop micro-sheen */
+    .glass-card {
+      background: rgba(23, 31, 51, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Custom scroll behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex justify-center selection:bg-primary selection:text-on-primary">
+<!-- Mobile Simulator Wrap: Max 440px viewport centered -->
+<div class="w-full max-w-[430px] min-h-screen bg-background relative flex flex-col shadow-2xl overflow-x-hidden border-x border-outline-variant/20">
+<!-- TOP APP BAR (Shared Components Token Standard) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-3 bg-surface-container-low/90 backdrop-blur-md max-w-[430px] left-1/2 -translate-x-1/2 shadow-sm border-b border-outline-variant/30">
+<!-- Leading: Bot Avatar & Identity -->
+<div class="flex items-center gap-3">
+<div class="relative flex items-center justify-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/50 flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-primary text-[22px]" data-icon="smart_toy" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<!-- Emerald Active Status Ring Indicator -->
+<span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-primary pulse-ring-emerald border-2 border-surface-container-low"></span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h1 class="text-headline-sm font-headline-sm font-bold text-on-surface tracking-tight">FinBot AI</h1>
+<span class="px-1.5 py-0.2 rounded bg-primary/10 border border-primary/20 text-primary text-[10px] font-label-caps tracking-wider">HYBRID</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+            Online • Gemini &amp; Regex
+          </p>
+</div>
+</div>
+<!-- Trailing: Saldo & Actions Dropdown -->
+<div class="flex items-center gap-1.5">
+<!-- Quick Balance Chip -->
+<div class="hidden sm:flex flex-col items-end px-2.5 py-1 rounded-xl bg-surface-container-high border border-outline-variant/40">
+<span class="text-[10px] font-label-caps text-on-surface-variant tracking-wider">SALDO</span>
+<span class="text-body-sm font-headline-sm font-bold text-primary">Rp 2.425.000</span>
+</div>
+<button class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-200 active:scale-95" id="searchBtn" title="Cari">
+<span class="material-symbols-outlined text-[20px]" data-icon="search">search</span>
+</button>
+<div class="relative">
+<button class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-200 active:scale-95" id="menuBtn" title="Menu Lainnya">
+<span class="material-symbols-outlined text-[20px]" data-icon="more_vert">more_vert</span>
+</button>
+<!-- Dropdown Menu (Hapus riwayat, Pengaturan Gemini) -->
+<div class="hidden absolute right-0 top-11 w-52 rounded-xl bg-surface-container-high border border-outline-variant/40 shadow-xl py-1.5 z-50 backdrop-blur-md" id="moreMenu">
+<button class="w-full px-3.5 py-2 text-left text-body-sm font-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2.5 transition-colors" id="clearChatBtn">
+<span class="material-symbols-outlined text-error text-[18px]" data-icon="delete">delete</span>
+<span>Hapus riwayat chat</span>
+</button>
+<div class="my-1 border-t border-outline-variant/20"></div>
+<button class="w-full px-3.5 py-2 text-left text-body-sm font-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2.5 transition-colors">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="tune">tune</span>
+<span>Pengaturan API Gemini</span>
+</button>
+<button class="w-full px-3.5 py-2 text-left text-body-sm font-body-sm text-on-surface hover:bg-surface-container flex items-center gap-2.5 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="shield">shield</span>
+<span>Status Enkripsi 256-Bit</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- STICKY SUB-BAR: QUICK ACTION CHIPS RAIL -->
+<div class="sticky top-[61px] z-40 bg-surface-container-low/95 backdrop-blur-md border-b border-outline-variant/30 px-3 py-2">
+<!-- Saldo on small mobile row -->
+<div class="sm:hidden flex items-center justify-between mb-2 px-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="account_balance_wallet">account_balance_wallet</span>
+          Saldo Realtime
+        </span>
+<span class="text-label-lg font-headline-sm font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full border border-primary/25">
+          Rp 2.425.000
+        </span>
+</div>
+<!-- Action Chips horizontal scroll -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+<button class="chip-btn shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-label-md font-label-md hover:bg-primary hover:text-on-primary-container active:scale-95 transition-all duration-200" data-prompt="laporan">
+<span class="material-symbols-outlined text-[16px]" data-icon="bar_chart">bar_chart</span>
+<span>📊 Laporan</span>
+</button>
+<button class="chip-btn shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface text-label-md font-label-md hover:border-primary/50 hover:text-primary active:scale-95 transition-all duration-200" data-prompt="cek saldo">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="paid">paid</span>
+<span>💰 Cek Saldo</span>
+</button>
+<button class="chip-btn shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface text-label-md font-label-md hover:border-primary/50 hover:text-primary active:scale-95 transition-all duration-200" data-prompt="riwayat 5 transaksi terakhir">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="receipt_long">receipt_long</span>
+<span>📝 Riwayat</span>
+</button>
+<button class="chip-btn shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface text-label-md font-label-md hover:border-primary/50 hover:text-primary active:scale-95 transition-all duration-200" data-prompt="tambah pengeluaran 25000 untuk bensin">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="add_circle">add_circle</span>
+<span>➕ Tambah</span>
+</button>
+<button class="chip-btn shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface text-label-md font-label-md hover:border-primary/50 hover:text-primary active:scale-95 transition-all duration-200" data-prompt="analisis keuangan">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="insights">insights</span>
+<span>⚡ Analisis</span>
+</button>
+<button class="chip-btn shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface text-label-md font-label-md hover:border-primary/50 hover:text-primary active:scale-95 transition-all duration-200" data-prompt="bantuan">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="help_outline">help_outline</span>
+<span>❓ Bantuan</span>
+</button>
+</div>
+</div>
+<!-- MAIN CHAT STREAM CONTAINER -->
+<main class="flex-1 px-3 pt-4 pb-36 space-y-5 overflow-y-auto mt-2" id="chatStream">
+<!-- Security / Encryption Note Pill -->
+<div class="flex justify-center">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/30 text-on-surface-variant text-[10px] font-label-caps">
+<span class="material-symbols-outlined text-primary text-[13px]" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span>256-BIT ENCRYPTED • PERCAKAPAN AMAN</span>
+</div>
+</div>
+<!-- MESSAGE 1: BOT GREETING -->
+<div class="flex gap-2.5 items-start max-w-[92%]">
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="space-y-1">
+<div class="bg-surface-container-high border border-white/5 rounded-2xl rounded-tl-sm p-3.5 text-on-surface shadow-sm">
+<p class="text-body-md font-body-md leading-relaxed">
+              Halo! Saya <span class="font-bold text-primary">FinBot AI</span>. Siap bantu catat &amp; kelola keuangan Anda dengan bahasa sehari-hari.
+            </p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2 border-t border-outline-variant/20 pt-2">
+              Coba ketik <span class="text-primary font-medium">"tambah pengeluaran 50000 untuk makan siang"</span> atau klik tombol cepat di atas! 🚀
+            </p>
+</div>
+<span class="text-[10px] font-label-md text-on-surface-variant/70 pl-1">09:40</span>
+</div>
+</div>
+<!-- MESSAGE 2: USER PROMPT -->
+<div class="flex flex-col items-end max-w-[88%] ml-auto space-y-1">
+<div class="bg-gradient-to-br from-primary-container to-emerald-700 text-on-primary-fixed rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md shadow-primary-container/20">
+<p class="text-body-md font-headline-sm font-medium text-white">tambah pengeluaran 50000 untuk makan siang</p>
+</div>
+<div class="flex items-center gap-1 text-[10px] font-label-md text-on-surface-variant pr-1">
+<span>09:41</span>
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="done_all" data-weight="fill" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+<!-- MESSAGE 3: BOT RICH RESPONSE (TRANSAKSI BERHASIL) -->
+<div class="flex gap-2.5 items-start max-w-[95%]">
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="space-y-1 w-full">
+<!-- Rich Card Container -->
+<div class="bg-surface-container-high border border-white/10 rounded-2xl rounded-tl-sm p-3.5 space-y-3 shadow-md">
+<!-- Header status badge -->
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 border border-primary/30 text-primary text-label-md font-headline-sm font-semibold">
+<span class="material-symbols-outlined text-[15px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Transaksi Berhasil Ditambahkan
+              </span>
+<span class="text-[10px] font-label-caps text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">REGEX MATCH</span>
+</div>
+<!-- Breakdown Key-Value list -->
+<div class="bg-surface-container rounded-xl p-3 space-y-2 border border-outline-variant/20 text-body-sm font-body-sm">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Tipe</span>
+<span class="px-2 py-0.5 rounded bg-error/15 border border-error/30 text-error text-[11px] font-headline-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="arrow_outward">arrow_outward</span>
+                  Pengeluaran
+                </span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Jumlah</span>
+<span class="font-bold text-headline-sm text-on-surface tracking-tight">Rp 50.000</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Deskripsi</span>
+<span class="font-medium text-on-surface">Makan siang</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Kategori</span>
+<span class="flex items-center gap-1 text-on-surface font-medium bg-surface-container-high px-2 py-0.5 rounded-lg border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-[14px]" data-icon="restaurant">restaurant</span>
+                  Makanan &amp; Minuman
+                </span>
+</div>
+<div class="flex justify-between items-center text-[12px]">
+<span class="text-on-surface-variant">Tanggal</span>
+<span class="text-on-surface-variant">Hari ini, 08 Okt 2026</span>
+</div>
+</div>
+<!-- Balance Highlight Box -->
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-lowest/80 border border-primary/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="text-label-md font-body-md text-on-surface">Saldo Anda:</span>
+</div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary">Rp 2.450.000</span>
+</div>
+<!-- Quick Inline Actions -->
+<div class="flex items-center gap-2 pt-1">
+<button class="action-btn flex-1 py-1.5 px-3 rounded-lg bg-surface-container border border-outline-variant/40 hover:border-primary text-on-surface hover:text-primary text-label-md font-label-md flex items-center justify-center gap-1 transition-all active:scale-95" data-action="ubah">
+<span class="material-symbols-outlined text-[15px]" data-icon="edit">edit</span>
+                Ubah
+              </button>
+<button class="action-btn flex-1 py-1.5 px-3 rounded-lg bg-surface-container border border-outline-variant/40 hover:border-error text-on-surface hover:text-error text-label-md font-label-md flex items-center justify-center gap-1 transition-all active:scale-95" data-action="batalkan">
+<span class="material-symbols-outlined text-[15px]" data-icon="close">close</span>
+                Batalkan
+              </button>
+</div>
+</div>
+<span class="text-[10px] font-label-md text-on-surface-variant/70 pl-1">09:41</span>
+</div>
+</div>
+<!-- MESSAGE 4: USER UPDATE COMMAND -->
+<div class="flex flex-col items-end max-w-[88%] ml-auto space-y-1">
+<div class="bg-gradient-to-br from-primary-container to-emerald-700 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md shadow-primary-container/20">
+<p class="text-body-md font-headline-sm font-medium">ubah makan siang jadi 75000</p>
+</div>
+<div class="flex items-center gap-1 text-[10px] font-label-md text-on-surface-variant pr-1">
+<span>09:42</span>
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="done_all" data-weight="fill" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+<!-- MESSAGE 5: BOT UPDATE RESPONSE -->
+<div class="flex gap-2.5 items-start max-w-[95%]">
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="space-y-1 w-full">
+<div class="bg-surface-container-high border border-white/10 rounded-2xl rounded-tl-sm p-3.5 space-y-2.5 shadow-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-lg font-headline-sm font-bold text-on-surface">Transaksi berhasil diubah!</span>
+</div>
+<div class="bg-surface-container rounded-xl p-3 border border-outline-variant/20 space-y-1.5 text-body-sm font-body-sm">
+<div class="flex justify-between items-center text-on-surface">
+<span class="text-on-surface-variant">Deskripsi:</span>
+<span class="font-semibold">Makan siang</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Jumlah baru:</span>
+<span class="text-headline-sm font-headline-sm font-bold text-primary">Rp 75.000</span>
+</div>
+<div class="text-[11px] text-on-surface-variant text-right line-through">
+                (dari Rp 50.000)
+              </div>
+</div>
+<!-- Current Balance alert -->
+<div class="flex justify-between items-center px-3 py-2 rounded-lg bg-surface-container-lowest border border-outline-variant/20">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Saldo Anda saat ini:</span>
+<span class="text-headline-sm font-headline-sm font-bold text-secondary">Rp 2.425.000</span>
+</div>
+</div>
+<span class="text-[10px] font-label-md text-on-surface-variant/70 pl-1">09:42</span>
+</div>
+</div>
+<!-- MESSAGE 6: USER ASKS FOR LAPORAN -->
+<div class="flex flex-col items-end max-w-[88%] ml-auto space-y-1">
+<div class="bg-gradient-to-br from-primary-container to-emerald-700 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md shadow-primary-container/20">
+<p class="text-body-md font-headline-sm font-medium">laporan</p>
+</div>
+<div class="flex items-center gap-1 text-[10px] font-label-md text-on-surface-variant pr-1">
+<span>09:43</span>
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="done_all" data-weight="fill" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+<!-- MESSAGE 7: BOT FINANCIAL REPORT CARD -->
+<div class="flex gap-2.5 items-start max-w-[96%]">
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="space-y-1 w-full">
+<div class="bg-surface-container-high border border-white/10 rounded-2xl rounded-tl-sm p-4 space-y-3.5 shadow-lg">
+<!-- Report Title Header -->
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="analytics">analytics</span>
+<h3 class="text-headline-sm font-headline-sm font-bold text-on-surface">Laporan Keuangan</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant text-[11px] font-label-caps font-semibold">OKTOBER 2026</span>
+</div>
+<!-- Big Balance Banner Bento Item -->
+<div class="p-3.5 rounded-xl bg-gradient-to-r from-surface-container to-surface-container-low border border-primary/25 relative overflow-hidden">
+<div class="relative z-10">
+<span class="text-label-caps font-label-caps text-on-surface-variant uppercase tracking-wider">Saldo Total Tersedia</span>
+<div class="text-display-currency-mobile font-display-currency-mobile font-bold text-primary tracking-tight">
+                  Rp 2.425.000
+                </div>
+</div>
+<div class="absolute -right-3 -bottom-3 w-16 h-16 rounded-full bg-primary/10 blur-xl"></div>
+</div>
+<!-- Monthly Income vs Expense Mini Stats Grid -->
+<div class="grid grid-cols-2 gap-2 text-body-sm">
+<div class="p-2.5 rounded-xl bg-surface-container border border-outline-variant/20">
+<div class="flex items-center gap-1 text-[11px] text-primary font-semibold mb-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_downward">arrow_downward</span>
+                  Pemasukan
+                </div>
+<div class="font-bold text-on-surface text-label-lg">Rp 5.000.000</div>
+</div>
+<div class="p-2.5 rounded-xl bg-surface-container border border-outline-variant/20">
+<div class="flex items-center gap-1 text-[11px] text-error font-semibold mb-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_upward">arrow_upward</span>
+                  Pengeluaran
+                </div>
+<div class="font-bold text-on-surface text-label-lg">Rp 2.575.000</div>
+</div>
+</div>
+<!-- Spending vs Income Visual Progress Meter -->
+<div class="space-y-1.5 bg-surface-container/60 p-3 rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-center text-[12px] font-label-md">
+<span class="text-on-surface-variant">Rasio Pengeluaran</span>
+<span class="font-bold text-primary">51.5% terpakai</span>
+</div>
+<div class="w-full h-2.5 rounded-full bg-surface-bright/70 overflow-hidden relative">
+<div class="h-full bg-gradient-to-r from-primary to-amber-400 rounded-full" style="width: 51.5%;"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] text-on-surface-variant font-label-caps">
+<span>47 Transaksi Tercatat</span>
+<span>Batas Sehat: 70%</span>
+</div>
+</div>
+<!-- Breakdown Hint Prompt Pill -->
+<button class="w-full py-2 px-3 rounded-xl bg-surface-container hover:bg-surface border border-dashed border-outline-variant/50 text-label-md font-label-md text-primary flex items-center justify-between transition-colors chip-btn" data-prompt="laporan detail">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="insights">insights</span>
+                Ketik "laporan detail" untuk breakdown kategori
+              </span>
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<span class="text-[10px] font-label-md text-on-surface-variant/70 pl-1">09:43</span>
+</div>
+</div>
+<!-- MESSAGE 8: DISAMBIGUATION / MULTIPLE MATCHES EXAMPLE -->
+<div class="flex gap-2.5 items-start max-w-[95%]">
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="space-y-1 w-full">
+<div class="bg-surface-container-high border border-white/10 rounded-2xl rounded-tl-sm p-3.5 space-y-2.5 shadow-md">
+<div class="flex items-center gap-1.5 text-secondary font-headline-sm font-semibold text-body-md">
+<span class="material-symbols-outlined text-[18px]" data-icon="find_in_page">find_in_page</span>
+<span>Ditemukan 3 transaksi yang cocok:</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+              Perintah Anda: <span class="text-on-surface font-medium">"hapus makan siang"</span>. Silakan pilih transaksi yang ingin dihapus:
+            </p>
+<!-- Disambiguation Interactive List -->
+<div class="space-y-1.5">
+<div class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-highest border border-outline-variant/30 flex items-center justify-between cursor-pointer transition-colors group">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">1</span>
+<div>
+<div class="text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">Makan siang</div>
+<div class="text-[11px] text-on-surface-variant">08 Okt 2026 (Hari ini)</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-body-sm font-bold text-on-surface">Rp 75.000</span>
+<span class="material-symbols-outlined text-[16px] text-error group-hover:scale-110 transition-transform" data-icon="delete">delete</span>
+</div>
+</div>
+<div class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-highest border border-outline-variant/30 flex items-center justify-between cursor-pointer transition-colors group">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">2</span>
+<div>
+<div class="text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">Makan siang kemarin</div>
+<div class="text-[11px] text-on-surface-variant">07 Okt 2026</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-body-sm font-bold text-on-surface">Rp 75.000</span>
+<span class="material-symbols-outlined text-[16px] text-error group-hover:scale-110 transition-transform" data-icon="delete">delete</span>
+</div>
+</div>
+<div class="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-highest border border-outline-variant/30 flex items-center justify-between cursor-pointer transition-colors group">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center">3</span>
+<div>
+<div class="text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">Makan siang minggu lalu</div>
+<div class="text-[11px] text-on-surface-variant">01 Okt 2026</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-body-sm font-bold text-on-surface">Rp 60.000</span>
+<span class="material-symbols-outlined text-[16px] text-error group-hover:scale-110 transition-transform" data-icon="delete">delete</span>
+</div>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant italic pt-1">
+              * Ketik 'batal' untuk mengabaikan atau tentukan nomor yang akan diproses.
+            </p>
+</div>
+<span class="text-[10px] font-label-md text-on-surface-variant/70 pl-1">09:44</span>
+</div>
+</div>
+<!-- ACTIVE TYPING INDICATOR -->
+<div class="flex gap-2.5 items-center" id="typingIndicator">
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="flex items-center gap-2 px-3.5 py-2 rounded-2xl rounded-tl-sm bg-surface-container-high border border-white/5">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-bounce" style="animation-delay: 0ms;"></span>
+<span class="w-2 h-2 rounded-full bg-primary animate-bounce" style="animation-delay: 150ms;"></span>
+<span class="w-2 h-2 rounded-full bg-primary animate-bounce" style="animation-delay: 300ms;"></span>
+</div>
+<span class="text-[12px] font-label-md text-on-surface-variant ml-1">FinBot sedang menganalisis...</span>
+</div>
+</div>
+</main>
+<!-- FLOATING DOCKED BOTTOM INPUT BAR -->
+<div class="fixed bottom-0 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur-lg border-t border-outline-variant/30 px-3 pt-2 pb-3 max-w-[430px] left-1/2 -translate-x-1/2">
+<!-- Input Boundary Container -->
+<form class="relative flex items-center gap-1.5 bg-surface-container rounded-2xl p-1.5 border border-outline-variant/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all shadow-lg" id="chatForm">
+<!-- Left Trailing: Attachment / Quick Action -->
+<button class="w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high active:scale-95 transition-all shrink-0" id="attachBtn" title="Lampiran Bukti/Struk" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="attach_file">attach_file</span>
+</button>
+<!-- Auto-expanding text input -->
+<input autocomplete="off" class="flex-1 bg-transparent border-0 text-on-surface placeholder:text-on-surface-variant/60 text-body-sm font-body-sm focus:ring-0 focus:outline-none px-1 py-1.5" id="messageInput" placeholder='Ketik perintah (cth: "tambah 50000 untuk bensin")...' type="text"/>
+<!-- Right Trailing Controls -->
+<div class="flex items-center gap-1 shrink-0">
+<!-- Voice Mic Toggle -->
+<button class="w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high active:scale-95 transition-all" id="micBtn" title="Perintah Suara" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="mic">mic</span>
+</button>
+<!-- Circular Emerald Send Button -->
+<button class="w-10 h-10 rounded-xl bg-primary text-on-primary font-bold flex items-center justify-center shadow-md shadow-primary/25 hover:bg-primary-container active:scale-90 transition-all" id="sendBtn" title="Kirim Pesan" type="submit">
+<span class="material-symbols-outlined text-[20px]" data-icon="send" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</form>
+<!-- Mini Caption / Keyboard Shortcut Info -->
+<div class="flex justify-between items-center px-2 pt-1.5 text-[10px] font-label-caps text-on-surface-variant/70">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-primary" data-icon="bolt">bolt</span>
+          Algoritma Gemini Flash &amp; Local Parser
+        </span>
+<span>Enter kirim • Shift+Enter baris baru</span>
+</div>
+</div>
+</div>
+<!-- Micro-interactions JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const chatStream = document.getElementById('chatStream');
+      const chatForm = document.getElementById('chatForm');
+      const messageInput = document.getElementById('messageInput');
+      const typingIndicator = document.getElementById('typingIndicator');
+      const menuBtn = document.getElementById('menuBtn');
+      const moreMenu = document.getElementById('moreMenu');
+      const clearChatBtn = document.getElementById('clearChatBtn');
+      const chipButtons = document.querySelectorAll('.chip-btn');
+      const micBtn = document.getElementById('micBtn');
+
+      // Scroll to bottom helper
+      function scrollToBottom() {
+        chatStream.scrollTop = chatStream.scrollHeight;
+      }
+      scrollToBottom();
+
+      // Toggle dropdown menu
+      menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moreMenu.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!moreMenu.contains(e.target) && e.target !== menuBtn) {
+          moreMenu.classList.add('hidden');
+        }
+      });
+
+      // Clear chat simulation
+      clearChatBtn.addEventListener('click', () => {
+        if (confirm('Bersihkan percakapan ini?')) {
+          const messages = chatStream.querySelectorAll('.space-y-5 > div:not(#typingIndicator)');
+          // Keep only welcome
+          messages.forEach((msg, idx) => {
+            if (idx > 1) msg.remove();
+          });
+          moreMenu.classList.add('hidden');
+        }
+      });
+
+      // Chip click: populate or send
+      chipButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const prompt = btn.getAttribute('data-prompt');
+          if (prompt) {
+            messageInput.value = prompt;
+            messageInput.focus();
+          }
+        });
+      });
+
+      // Mic interaction pulse feedback
+      let isRecording = false;
+      micBtn.addEventListener('click', () => {
+        isRecording = !isRecording;
+        if (isRecording) {
+          micBtn.classList.add('text-error', 'animate-pulse');
+          messageInput.placeholder = 'Mendengarkan suara Anda...';
+        } else {
+          micBtn.classList.remove('text-error', 'animate-pulse');
+          messageInput.placeholder = 'Ketik perintah (cth: "tambah 50000 untuk bensin")...';
+          messageInput.value = 'tambah pengeluaran 45000 untuk kopi dan camilan';
+          messageInput.focus();
+        }
+      });
+
+      // Inline action buttons inside cards (Ubah / Batalkan)
+      document.addEventListener('click', (e) => {
+        const actionBtn = e.target.closest('.action-btn');
+        if (actionBtn) {
+          const action = actionBtn.getAttribute('data-action');
+          if (action === 'ubah') {
+            messageInput.value = 'ubah makan siang jadi ';
+            messageInput.focus();
+          } else if (action === 'batalkan') {
+            appendUserMessage('batalkan transaksi makan siang');
+            simulateBotResponse('Transaksi "Makan siang" senilai Rp 75.000 telah dibatalkan. Saldo Anda dikembalikan menjadi Rp 2.500.000.');
+          }
+        }
+      });
+
+      // Handle user message submission
+      chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = messageInput.value.trim();
+        if (!text) return;
+
+        appendUserMessage(text);
+        messageInput.value = '';
+        messageInput.focus();
+
+        // Simulate intelligent response
+        handleBotLogic(text);
+      });
+
+      function appendUserMessage(text) {
+        const timeNow = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        const userMsgDiv = document.createElement('div');
+        userMsgDiv.className = 'flex flex-col items-end max-w-[88%] ml-auto space-y-1 transition-all duration-300 transform translate-y-2 opacity-0';
+        userMsgDiv.innerHTML = `
+          <div class="bg-gradient-to-br from-primary-container to-emerald-700 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md shadow-primary-container/20">
+            <p class="text-body-md font-headline-sm font-medium">${escapeHTML(text)}</p>
+          </div>
+          <div class="flex items-center gap-1 text-[10px] font-label-md text-on-surface-variant pr-1">
+            <span>${timeNow}</span>
+            <span class="material-symbols-outlined text-[13px] text-primary" data-icon="done_all" style="font-variation-settings: 'FILL' 1;">done_all</span>
+          </div>
+        `;
+
+        // Insert before typing indicator
+        chatStream.insertBefore(userMsgDiv, typingIndicator);
+        setTimeout(() => {
+          userMsgDiv.classList.remove('translate-y-2', 'opacity-0');
+        }, 10);
+        scrollToBottom();
+      }
+
+      function simulateBotResponse(contentHtml, isCard = false) {
+        typingIndicator.classList.remove('hidden');
+        scrollToBottom();
+
+        setTimeout(() => {
+          const timeNow = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+          const botDiv = document.createElement('div');
+          botDiv.className = 'flex gap-2.5 items-start max-w-[95%] transition-all duration-300 transform translate-y-2 opacity-0';
+          
+          botDiv.innerHTML = `
+            <div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-primary text-[16px]" data-icon="smart_toy">smart_toy</span>
+            </div>
+            <div class="space-y-1 w-full">
+              <div class="bg-surface-container-high border border-white/10 rounded-2xl rounded-tl-sm p-3.5 space-y-2 shadow-md">
+                ${contentHtml}
+              </div>
+              <span class="text-[10px] font-label-md text-on-surface-variant/70 pl-1">${timeNow}</span>
+            </div>
+          `;
+
+          chatStream.insertBefore(botDiv, typingIndicator);
+          setTimeout(() => {
+            botDiv.classList.remove('translate-y-2', 'opacity-0');
+          }, 10);
+          scrollToBottom();
+        }, 900);
+      }
+
+      function handleBotLogic(text) {
+        const lower = text.toLowerCase();
+        if (lower.includes('saldo')) {
+          simulateBotResponse(`
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[20px]" data-icon="account_balance_wallet">account_balance_wallet</span>
+              <span class="font-bold text-headline-sm text-on-surface">Informasi Saldo</span>
+            </div>
+            <p class="text-body-sm font-body-sm text-on-surface-variant">Saldo realtime Anda per saat ini adalah:</p>
+            <div class="p-3 bg-surface-container rounded-xl border border-primary/20 text-center">
+              <span class="text-display-currency-mobile font-bold text-primary">Rp 2.425.000</span>
+            </div>
+          `);
+        } else if (lower.includes('tambah') || lower.includes('catat')) {
+          simulateBotResponse(`
+            <div class="flex items-center gap-1.5 text-primary font-bold">
+              <span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
+              <span>Transaksi Berhasil Diproses!</span>
+            </div>
+            <p class="text-body-sm font-body-sm text-on-surface">Data baru telah disimpan ke buku kas Oktober 2026. Anda dapat melihat rangkuman di menu laporan.</p>
+          `);
+        } else {
+          simulateBotResponse(`
+            <div class="flex items-center gap-2 text-primary font-bold">
+              <span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+              <span>FinBot AI Siap Membantu</span>
+            </div>
+            <p class="text-body-sm font-body-sm text-on-surface">Perintah "<strong>${escapeHTML(text)}</strong>" telah dipahami. Anda bisa mengecek grafik bulanan atau mencatat mutasi baru kapan saja.</p>
+          `);
+        }
+      }
+
+      function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+          tag => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+          }[tag] || tag)
+        );
+      }
+    });
+  </script>
+</body></html>

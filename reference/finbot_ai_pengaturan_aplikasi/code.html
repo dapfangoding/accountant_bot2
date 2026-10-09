@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FinBot AI - Pengaturan</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#222a3d",
+            "surface-dim": "#0b1326",
+            "primary-fixed": "#6ffbbe",
+            "surface-container-highest": "#2d3449",
+            "surface-bright": "#31394d",
+            "on-secondary-container": "#83c2a9",
+            "on-primary-fixed-variant": "#005236",
+            "on-surface": "#dae2fd",
+            "on-secondary-fixed-variant": "#0b513d",
+            "secondary-fixed": "#b0f0d6",
+            "outline": "#86948a",
+            "background": "#0b1326",
+            "outline-variant": "#3c4a42",
+            "surface": "#0b1326",
+            "on-tertiary-fixed-variant": "#005137",
+            "surface-tint": "#4edea3",
+            "secondary": "#95d3ba",
+            "inverse-primary": "#006c49",
+            "on-primary": "#003824",
+            "surface-container-lowest": "#060e20",
+            "surface-variant": "#2d3449",
+            "on-secondary": "#003829",
+            "tertiary-container": "#00b982",
+            "on-secondary-fixed": "#002117",
+            "on-tertiary-fixed": "#002114",
+            "primary-container": "#10b981",
+            "on-surface-variant": "#bbcabf",
+            "error": "#ffb4ab",
+            "on-error-container": "#ffdad6",
+            "primary-fixed-dim": "#4edea3",
+            "on-tertiary": "#003825",
+            "tertiary": "#45dfa4",
+            "tertiary-fixed-dim": "#45dfa4",
+            "on-primary-container": "#00422b",
+            "secondary-container": "#0b513d",
+            "on-primary-fixed": "#002113",
+            "surface-container": "#171f33",
+            "inverse-surface": "#dae2fd",
+            "inverse-on-surface": "#283044",
+            "surface-container-low": "#131b2e",
+            "on-tertiary-container": "#00422c",
+            "primary": "#4edea3",
+            "error-container": "#93000a",
+            "tertiary-fixed": "#68fcbf",
+            "on-error": "#690005",
+            "secondary-fixed-dim": "#95d3ba",
+            "on-background": "#dae2fd"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "gutter": "1rem",
+            "space-2xl": "2rem",
+            "space-md": "0.75rem",
+            "margin-lg": "1.5rem",
+            "gutter-sm": "0.75rem",
+            "space-xl": "1.5rem",
+            "space-lg": "1rem",
+            "margin": "1rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "label-caps": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-currency-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "display-currency": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-caps": ["10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-currency-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "display-currency": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-28 selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar Component (from JSON specs) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-3 bg-surface-container-low/90 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-3">
+<!-- Leading robot avatar with emerald ring -->
+<div class="relative flex items-center justify-center w-9 h-9 rounded-full bg-surface-container ring-2 ring-primary-container/80 ring-offset-2 ring-offset-surface-container-low">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="smart_toy">smart_toy</span>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-primary-container rounded-full ring-2 ring-surface-container-low"></span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Pengaturan</h1>
+</div>
+</div>
+<!-- Trailing profile avatar & actions -->
+<div class="flex items-center gap-2">
+<button aria-label="Notifikasi" class="flex items-center justify-center w-9 h-9 rounded-xl bg-surface-container text-on-surface hover:bg-surface-container-high transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<div class="w-9 h-9 rounded-xl bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-label-lg text-label-lg font-bold text-primary">
+        RR
+      </div>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="max-w-md mx-auto px-4 pt-20 space-y-5">
+<!-- User Profile Summary Bento Card -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-4 shadow-sm relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-28 h-28 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center gap-3.5 relative z-10">
+<div class="relative">
+<div class="w-14 h-14 rounded-full bg-gradient-to-tr from-surface-container-high to-surface-container-highest border border-outline-variant/50 flex items-center justify-center text-primary font-headline-md text-headline-md font-bold shadow-inner">
+            RR
+          </div>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-0.5">
+<span class="material-symbols-outlined text-primary text-base block" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Rizky Ramadhan</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">rizky@finbot.id</p>
+<div class="mt-1.5 flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container/15 border border-primary/30 text-primary font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-xs" data-icon="auto_awesome">auto_awesome</span>
+              FinBot Pro User
+            </span>
+</div>
+</div>
+<button aria-label="Edit Profil" class="w-9 h-9 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-on-surface-variant transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+</div>
+<!-- Security Mini-Badge (Style guidance spec: 256-BIT ENCRYPTED) -->
+<div class="mt-3.5 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-on-surface-variant">
+<div class="inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="lock" data-weight="fill" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="font-label-caps text-label-caps text-primary">256-BIT ENCRYPTED</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Aktif sejak Mei 2024</span>
+</div>
+</section>
+<!-- SECTION 1: AI Engine & NLP Configuration -->
+<section class="space-y-2.5">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-base" data-icon="neurology">neurology</span>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant tracking-wider">AI ENGINE &amp; NLP CONFIGURATION</h3>
+</div>
+<span class="font-label-caps text-label-caps text-primary bg-surface-container-low px-2 py-0.5 rounded border border-outline-variant/30">v2.4-flash</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-4 space-y-4">
+<!-- Google Gemini API Key Field -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-1.5">
+<span>Google Gemini API Key</span>
+</label>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/40 border border-primary/20 text-primary font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+              Terhubung &amp; Aktif
+            </span>
+</div>
+<div class="relative flex items-center">
+<div class="absolute left-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="key">key</span>
+</div>
+<input class="w-full bg-surface-dim border border-outline-variant/40 rounded-xl py-2.5 pl-10 pr-20 font-body-sm text-body-sm text-on-surface tracking-widest focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" readonly="" type="password" value="AIzaSyD88194kxL09xZ"/>
+<div class="absolute right-2 flex items-center gap-1">
+<button aria-label="Tampilkan Key" class="p-1.5 text-on-surface-variant hover:text-on-surface transition-all active:scale-95">
+<span class="material-symbols-outlined text-base" data-icon="visibility">visibility</span>
+</button>
+<button aria-label="Perbarui Key" class="p-1.5 text-on-surface-variant hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined text-base" data-icon="refresh">refresh</span>
+</button>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-outline mt-1">Digunakan untuk Function Calling pencatatan otomatis &amp; ekstraksi struk belanja.</p>
+</div>
+<!-- Parsing Mode Radio Options -->
+<div class="pt-2 border-t border-outline-variant/20">
+<label class="font-label-md text-label-md font-semibold text-on-surface block mb-2">Mode Parsing NLP</label>
+<div class="space-y-2">
+<!-- Option 1: Selected -->
+<label class="flex items-start gap-3 p-3 rounded-xl bg-surface-container border border-primary/50 relative cursor-pointer transition-all">
+<input checked="" class="mt-0.5 text-primary-container focus:ring-primary bg-surface-dim border-outline-variant" name="parsing_mode" type="radio"/>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Hybrid (Gemini Function Calling + Regex Fallback)</span>
+<span class="font-label-caps text-label-caps text-primary bg-primary-container/20 px-1.5 py-0.5 rounded">Rekomendasi</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Akurasi maksimal via cloud AI dengan pengalihan cerdas ke parser offline lokal saat koneksi lambat.</p>
+</div>
+</label>
+<!-- Option 2 -->
+<label class="flex items-start gap-3 p-3 rounded-xl bg-surface-dim/60 border border-outline-variant/30 hover:border-outline-variant/60 cursor-pointer transition-all">
+<input class="mt-0.5 text-primary-container focus:ring-primary bg-surface-dim border-outline-variant" name="parsing_mode" type="radio"/>
+<div class="flex-1">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Hanya Gemini Flash</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Memproses seluruh percakapan menggunakan model multimodal Google Gemini 1.5 Flash.</p>
+</div>
+</label>
+<!-- Option 3 -->
+<label class="flex items-start gap-3 p-3 rounded-xl bg-surface-dim/60 border border-outline-variant/30 hover:border-outline-variant/60 cursor-pointer transition-all">
+<input class="mt-0.5 text-primary-container focus:ring-primary bg-surface-dim border-outline-variant" name="parsing_mode" type="radio"/>
+<div class="flex-1">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Hanya Regex Offline</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Pola sintaks cepat tanpa konsumsi kuota API, ideal saat mode pesawat atau hemat data.</p>
+</div>
+</label>
+</div>
+</div>
+<!-- Auto-detect Kategori Toggle -->
+<div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between">
+<div class="pr-3">
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Auto-detect Kategori</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Klasifikasi otomatis pos pengeluaran berdasarkan riwayat transaksi Anda.</span>
+</div>
+<!-- Toggle switch (Enabled - Emerald) -->
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container shadow-inner"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- SECTION 2: Preferensi Keuangan -->
+<section class="space-y-2.5">
+<div class="flex items-center gap-1.5 px-1">
+<span class="material-symbols-outlined text-primary text-base" data-icon="account_balance_wallet">account_balance_wallet</span>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant tracking-wider">PREFERENSI KEUANGAN</h3>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl divide-y divide-outline-variant/20 shadow-sm overflow-hidden">
+<!-- Mata Uang Utama -->
+<div class="p-4 flex items-center justify-between">
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Mata Uang Utama</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Denominasi standar untuk saldo &amp; ringkasan</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container border border-outline-variant/40">
+<span class="font-label-caps text-label-caps font-bold text-primary">IDR</span>
+<span class="font-body-sm text-body-sm text-on-surface">(Rupiah Rp)</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Format Pemisah Ribuan -->
+<div class="p-4 flex items-center justify-between">
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Format Pemisah Ribuan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Standar penulisan angka desimal &amp; ribuan</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container border border-outline-variant/40">
+<span class="font-body-sm text-body-sm text-on-surface">Titik (1.000.000)</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Batas Anggaran Bulanan -->
+<div class="p-4 space-y-2">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Batas Anggaran Bulanan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Target pengeluaran maksimal bulan ini</span>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-label-lg font-bold text-primary">Rp 3.500.000</span>
+</div>
+</div>
+<!-- Micro Progress Gauge -->
+<div class="pt-1">
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full transition-all duration-300" style="width: 68%;"></div>
+</div>
+<div class="flex justify-between items-center mt-1.5">
+<span class="font-label-caps text-label-caps text-outline">TERPAKAI: RP 2.380.000 (68%)</span>
+<span class="font-label-caps text-label-caps text-primary">SISA RP 1.120.000</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: Notifikasi & Pengingat -->
+<section class="space-y-2.5">
+<div class="flex items-center gap-1.5 px-1">
+<span class="material-symbols-outlined text-primary text-base" data-icon="notifications_active">notifications_active</span>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant tracking-wider">NOTIFIKASI &amp; PENGINGAT</h3>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl divide-y divide-outline-variant/20 shadow-sm overflow-hidden">
+<!-- Peringatan Anggaran Kritis -->
+<div class="p-4 flex items-center justify-between">
+<div class="pr-3">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg font-semibold text-on-surface">Peringatan Anggaran Kritis</span>
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="warning">warning</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Kirim peringatan instan jika pengeluaran mencapai 80% dari plafon bulanan.</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container shadow-inner"></div>
+</label>
+</div>
+<!-- Rekap Harian FinBot -->
+<div class="p-4 flex items-center justify-between">
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Rekap Harian FinBot</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ikhtisar percakapan &amp; transaksi setiap malam</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container border border-outline-variant/40">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="schedule">schedule</span>
+<span class="font-label-lg text-label-lg font-medium text-on-surface">20:00 WIB</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant" data-icon="edit">edit</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Data & Keamanan -->
+<section class="space-y-2.5">
+<div class="flex items-center gap-1.5 px-1">
+<span class="material-symbols-outlined text-primary text-base" data-icon="shield">shield</span>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant tracking-wider">DATA &amp; KEAMANAN</h3>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl divide-y divide-outline-variant/20 shadow-sm overflow-hidden">
+<!-- Backup Data Lokal -->
+<button class="w-full p-4 flex items-center justify-between hover:bg-surface-container-high/50 transition-all text-left active:scale-[0.99]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="cloud_download">cloud_download</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Backup Data Lokal</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ekspor riwayat ke file terenkripsi (JSON / SQLite)</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Reset Database Transaksi -->
+<div class="p-4 flex items-center justify-between hover:bg-surface-container-high/40 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-error-container/20 flex items-center justify-center text-error">
+<span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-error block">Reset Database Transaksi</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hapus seluruh riwayat pembukuan &amp; chat log</span>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-error-container/30 hover:bg-error-container/50 border border-error/40 text-error font-label-md text-label-md font-semibold transition-all duration-200 active:scale-95">
+            Reset
+          </button>
+</div>
+<!-- Keluar Akun -->
+<button class="w-full p-4 flex items-center justify-between hover:bg-surface-container-high/50 transition-all text-left active:scale-[0.99]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+</div>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Keluar Akun</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Akhiri sesi aktif pada perangkat ini</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Version & System Info Footer -->
+<div class="text-center pt-2 pb-6 space-y-1">
+<div class="flex items-center justify-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<p class="font-label-caps text-label-caps text-outline tracking-wider">FINBOT AI SYSTEM BUILD 2024.11-PRO</p>
+</div>
+<p class="font-body-sm text-body-sm text-outline/70">Dibuat dengan protokol enkripsi peer-to-cloud untuk keamanan finansial Anda.</p>
+</div>
+</main>
+<!-- BottomNavBar Component (from JSON specs) -->
+<!-- Contextual lock: Screen is "Pengaturan", so index 4 is active -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container-low/95 backdrop-blur-lg pb-safe shadow-lg">
+<!-- Item 0: Beranda -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps mt-0.5">Beranda</span>
+</a>
+<!-- Item 1: Obrolan AI -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-caps text-label-caps mt-0.5">Obrolan AI</span>
+</a>
+<!-- Item 2: Transaksi -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-caps text-label-caps mt-0.5">Transaksi</span>
+</a>
+<!-- Item 3: Laporan -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="insights">insights</span>
+<span class="font-label-caps text-label-caps mt-0.5">Laporan</span>
+</a>
+<!-- Item 4: Pengaturan (ACTIVE STATE) -->
+<a class="flex flex-col items-center justify-center text-primary py-1 hover:text-primary transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl text-primary font-bold" data-icon="tune" data-weight="fill" style="font-variation-settings: 'FILL' 1;">tune</span>
+<span class="font-label-caps text-label-caps font-bold mt-0.5 text-primary">Pengaturan</span>
+</a>
+</nav>
+</body></html>
