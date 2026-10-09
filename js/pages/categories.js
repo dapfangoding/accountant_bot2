@@ -17,12 +17,81 @@ function initCategories() {
     tabIncome.className = "flex-1 py-2.5 rounded text-label-md text-on-surface-variant hover:text-on-surface text-center transition-all";
   }
   
+  renderBudgetOverview();
   renderCategoriesList();
   setupEventListeners();
   
   window.addEventListener('storage-change', () => {
+    renderBudgetOverview();
     renderCategoriesList();
   });
+}
+
+/**
+ * Render budget overview (total budget, spent, remaining) from database
+ */
+function renderBudgetOverview() {
+  const categories = Storage.getCategories();
+  const transactions = Storage.getTransactions();
+  
+  const expenseCategories = categories.filter(c => c.type === 'expense' && c.budgetEnabled && c.budgetLimit);
+  const totalBudget = expenseCategories.reduce((sum, c) => sum + (c.budgetLimit || 0), 0);
+  
+  // Calculate spent for current month
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  
+  const monthlyExpenses = transactions.filter(t => {
+    const d = new Date(t.date);
+    return t.type === 'expense' && d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  });
+  
+  const totalSpent = monthlyExpenses.reduce((sum, t) => sum + parseFloat(t.amount), 0);
+  const percentage = totalBudget > 0 ? Math.min((totalSpent / totalBudget) * 100, 100) : 0;
+  const remaining = Math.max(totalBudget - totalSpent, 0);
+  const remainingPct = totalBudget > 0 ? Math.max(100 - percentage, 0) : 0;
+  
+  const monthName = now.toLocaleDateString('id-ID', { month: 'long' });
+  
+  // Update total budget
+  const totalBudgetEl = document.getElementById('totalBudget');
+  if (totalBudgetEl) totalBudgetEl.textContent = Utils.formatRupiah(totalBudget);
+  
+  // Update spent budget
+  const spentBudgetEl = document.getElementById('spentBudget');
+  if (spentBudgetEl) spentBudgetEl.textContent = Utils.formatRupiah(totalSpent);
+  
+  // Update remaining budget
+  const remainingBudgetEl = document.getElementById('remainingBudget');
+  if (remainingBudgetEl) remainingBudgetEl.textContent = Utils.formatRupiah(remaining);
+  
+  // Update percentage texts
+  const spentPercentageEl = document.getElementById('spentPercentage');
+  if (spentPercentageEl) spentPercentageEl.textContent = `${percentage.toFixed(1)}% dari pagu`;
+  
+  const remainingPercentageEl = document.getElementById('remainingPercentage');
+  if (remainingPercentageEl) remainingPercentageEl.textContent = `${remainingPct.toFixed(1)}% tersisa`;
+  
+  // Update progress bar
+  const budgetOverviewBar = document.getElementById('budgetOverviewBar');
+  if (budgetOverviewBar) {
+    const barInner = budgetOverviewBar.querySelector('div');
+    if (barInner) barInner.style.width = `${percentage}%`;
+  }
+  
+  // Update badge
+  const badge = document.getElementById('budgetOverviewBadge');
+  if (badge) {
+    badge.textContent = `${percentage.toFixed(1)}% TERPAKAI`;
+    if (percentage >= 100) {
+      badge.className = 'text-label-caps text-error bg-error-container/40 border border-error/30 px-2.5 py-1 rounded-full';
+    } else if (percentage >= 80) {
+      badge.className = 'text-label-caps text-warning bg-warning/20 border border-warning/30 px-2.5 py-1 rounded-full';
+    } else {
+      badge.className = 'text-label-caps text-primary bg-secondary-container/70 border border-primary/20 px-2.5 py-1 rounded-full';
+    }
+  }
 }
 
 function setActiveTab(tab) {

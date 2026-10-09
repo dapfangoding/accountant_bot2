@@ -155,17 +155,17 @@
         <div class="flex items-center justify-between mb-3">
           <div>
             <span class="text-label-caps text-on-surface-variant">Ringkasan Bulan Ini</span>
-            <h2 class="text-headline-sm font-bold text-on-surface">Total Budget Oktober</h2>
+            <h2 class="text-headline-sm font-bold text-on-surface">Total Budget</h2>
           </div>
-          <span class="text-label-caps text-primary bg-secondary-container/70 border border-primary/20 px-2.5 py-1 rounded-full">73.5% TERPAKAI</span>
+          <span id="budgetOverviewBadge" class="text-label-caps text-primary bg-secondary-container/70 border border-primary/20 px-2.5 py-1 rounded-full">0% TERPAKAI</span>
         </div>
         <div class="flex items-baseline justify-between mb-3">
-          <span class="text-display-currency-mobile font-bold text-on-surface">Rp 3.500.000</span>
-          <span class="text-label-md text-on-surface-variant">Limit Pagu</span>
+          <span id="totalBudget" class="text-display-currency-mobile font-bold text-on-surface">Rp 0</span>
+          <span class="text-label-md text-on-surface-variant">Total Limit</span>
         </div>
         <div class="space-y-1.5 mb-4">
-          <div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden">
-            <div class="h-full bg-gradient-to-r from-primary via-primary-container to-tertiary" style="width: 73.5%;"></div>
+          <div id="budgetOverviewBar" class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-primary via-primary-container to-tertiary" style="width: 0%;"></div>
           </div>
           <div class="flex justify-between items-center text-label-caps text-on-surface-variant">
             <span>0%</span>
@@ -180,16 +180,16 @@
               <span class="material-symbols-outlined text-[13px]" data-icon="arrow_upward">arrow_upward</span>
               <span>Terpakai</span>
             </div>
-            <div class="text-headline-sm font-bold text-on-surface">Rp 2.575.000</div>
-            <div class="text-label-caps text-on-surface-variant">73.5% dari pagu</div>
+            <div id="spentBudget" class="text-headline-sm font-bold text-on-surface">Rp 0</div>
+            <div id="spentPercentage" class="text-label-caps text-on-surface-variant">0% dari pagu</div>
           </div>
           <div class="bg-surface-container/60 p-2.5 rounded border border-outline-variant/20">
             <div class="flex items-center gap-1 text-label-caps text-primary mb-0.5">
               <span class="material-symbols-outlined text-[13px]" data-icon="savings">savings</span>
               <span>Sisa</span>
             </div>
-            <div class="text-headline-sm font-bold text-primary">Rp 925.000</div>
-            <div class="text-label-caps text-on-surface-variant">26.5% tersisa</div>
+            <div id="remainingBudget" class="text-headline-sm font-bold text-primary">Rp 0</div>
+            <div id="remainingPercentage" class="text-label-caps text-on-surface-variant">0% tersisa</div>
           </div>
         </div>
       </section>
