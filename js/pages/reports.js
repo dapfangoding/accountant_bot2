@@ -120,36 +120,34 @@ function renderReportSummary() {
   const balance = Utils.calculateBalance(transactions);
   
   container.innerHTML = `
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
-            <span class="material-symbols-outlined text-base" data-icon="account_balance">account_balance</span>
-          </div>
-          <span class="text-label-md text-on-surface-variant">Saldo Bersih</span>
+    <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-base" data-icon="account_balance">account_balance</span>
         </div>
-        <p class="text-headline-sm font-bold text-on-surface">${Utils.formatRupiah(balance.balance)}</p>
+        <span class="text-label-md text-on-surface-variant">Saldo Bersih</span>
       </div>
+      <p class="text-headline-md font-bold text-on-surface">${Utils.formatRupiah(balance.balance)}</p>
+    </div>
 
-      <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-8 rounded-lg bg-green-950/40 text-green-400 flex items-center justify-center">
-            <span class="material-symbols-outlined text-base" data-icon="south_west">south_west</span>
-          </div>
-          <span class="text-label-md text-on-surface-variant">Total Pemasukan</span>
+    <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-8 h-8 rounded-lg bg-green-950/40 text-green-400 flex items-center justify-center">
+          <span class="material-symbols-outlined text-base" data-icon="south_west">south_west</span>
         </div>
-        <p class="text-headline-sm font-bold text-green-400">${Utils.formatRupiah(balance.income)}</p>
+        <span class="text-label-md text-on-surface-variant">Total Pemasukan</span>
       </div>
+      <p class="text-headline-md font-bold text-green-400">${Utils.formatRupiah(balance.income)}</p>
+    </div>
 
-      <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-8 rounded-lg bg-red-950/40 text-red-400 flex items-center justify-center">
-            <span class="material-symbols-outlined text-base" data-icon="north_east">north_east</span>
-          </div>
-          <span class="text-label-md text-on-surface-variant">Total Pengeluaran</span>
+    <div class="bg-surface-container-low rounded-lg p-4 border border-outline-variant/30 shadow-sm">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-8 h-8 rounded-lg bg-red-950/40 text-red-400 flex items-center justify-center">
+          <span class="material-symbols-outlined text-base" data-icon="north_east">north_east</span>
         </div>
-        <p class="text-headline-sm font-bold text-red-400">${Utils.formatRupiah(balance.expense)}</p>
+        <span class="text-label-md text-on-surface-variant">Total Pengeluaran</span>
       </div>
+      <p class="text-headline-md font-bold text-red-400">${Utils.formatRupiah(balance.expense)}</p>
     </div>
   `;
 }
