@@ -298,6 +298,8 @@ window.exportToExcel = function() {
   data.forEach((row, i) => row['No'] = i + 1);
   
   const ws = XLSX.utils.json_to_sheet(data);
+  
+  // Set column widths
   ws['!cols'] = [
     { wch: 5 },
     { wch: 15 },
@@ -307,8 +309,32 @@ window.exportToExcel = function() {
     { wch: 15 },
   ];
   
+  // Apply Plus Jakarta Sans font to all cells
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  for (let R = range.s.r; R <= range.e.r; R++) {
+    for (let C = range.s.c; C <= range.e.c; C++) {
+      const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+      if (ws[cellRef]) {
+        ws[cellRef].s = {
+          font: { name: 'Plus Jakarta Sans', sz: 11 },
+          alignment: { horizontal: C === 5 ? 'right' : 'left', vertical: 'center' },
+        };
+        // Bold header row
+        if (R === 0) {
+          ws[cellRef].s.font.bold = true;
+          ws[cellRef].s.fill = { fgColor: { rgb: '0B1326' } };
+          ws[cellRef].s.font.color = { rgb: 'DAE2FD' };
+        }
+        // Number format for amount column
+        if (C === 5 && R > 0) {
+          ws[cellRef].z = '#,##0';
+        }
+      }
+    }
+  }
+  
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Laporan');
+  XLSX.utils.book_append_sheet(wb, ws, 'Laporan Keuangan');
   
   const filename = `laporan_keuangan_${new Date().toISOString().split('T')[0]}.xlsx`;
   XLSX.writeFile(wb, filename);
