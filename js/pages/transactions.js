@@ -13,11 +13,62 @@ function initTransactions() {
   setupFilters();
   applyFilters();
   setupEventListeners();
+  renderMonthlySummary();
   
   // Listen for storage changes
   window.addEventListener('storage-change', () => {
     applyFilters();
+    renderMonthlySummary();
   });
+}
+
+/**
+ * Render monthly summary stats (transactions count, net balance, income, expense)
+ */
+function renderMonthlySummary() {
+  const transactions = Storage.getTransactions();
+  
+  // Filter transactions for current month
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  
+  const monthlyTransactions = transactions.filter(t => {
+    const d = new Date(t.date);
+    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  });
+  
+  const monthlyIncome = monthlyTransactions
+    .filter(t => t.type === 'income')
+    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+  
+  const monthlyExpense = monthlyTransactions
+    .filter(t => t.type === 'expense')
+    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+  
+  const monthlyBalance = monthlyIncome - monthlyExpense;
+  
+  // Update elements
+  const transactionCount = document.getElementById('transaction-count');
+  if (transactionCount) {
+    transactionCount.textContent = `${monthlyTransactions.length} Transaksi`;
+  }
+  
+  const monthBalance = document.getElementById('month-balance');
+  if (monthBalance) {
+    monthBalance.textContent = `${monthlyBalance >= 0 ? '+' : ''}${Utils.formatRupiah(monthlyBalance)}`;
+    monthBalance.className = `text-headline-sm font-bold ${monthlyBalance >= 0 ? 'text-primary' : 'text-error'}`;
+  }
+  
+  const monthIncome = document.getElementById('month-income');
+  if (monthIncome) {
+    monthIncome.textContent = `IN: +${Utils.formatRupiah(monthlyIncome)}`;
+  }
+  
+  const monthExpense = document.getElementById('month-expense');
+  if (monthExpense) {
+    monthExpense.textContent = `OUT: -${Utils.formatRupiah(monthlyExpense)}`;
+  }
 }
 
 /**
