@@ -11,6 +11,7 @@ function initDashboard() {
   console.log('Dashboard - Total transactions:', transactions.length);
   
   renderSummaryCards();
+  renderDynamicStats();
   renderExpensePieChart();
   renderIncomeExpenseBarChart();
   renderRecentTransactions();
@@ -19,6 +20,105 @@ function initDashboard() {
     console.log('Storage changed, re-rendering dashboard');
     initDashboard();
   });
+}
+
+/**
+ * Render dynamic stats (balance, income, expense, budget gauge)
+ */
+function renderDynamicStats() {
+  const transactions = Storage.getTransactions();
+  const categories = Storage.getCategories();
+  const balance = Utils.calculateBalance(transactions);
+  
+  // Update main balance display
+  const balanceDisplay = document.getElementById('balanceDisplay');
+  if (balanceDisplay) {
+    const formattedBalance = Utils.formatRupiah(balance.balance);
+    balanceDisplay.textContent = formattedBalance;
+    balanceDisplay.dataset.realBalance = formattedBalance;
+  }
+  
+  // Update income display
+  const incomeDisplay = document.getElementById('incomeDisplay');
+  if (incomeDisplay) {
+    incomeDisplay.textContent = Utils.formatRupiah(balance.income);
+  }
+  
+  // Update expense display
+  const expenseDisplay = document.getElementById('expenseDisplay');
+  if (expenseDisplay) {
+    expenseDisplay.textContent = Utils.formatRupiah(balance.expense);
+  }
+  
+  // Calculate budget from categories with budget enabled
+  const expenseCategories = categories.filter(c => c.type === 'expense' && c.budgetEnabled && c.budgetLimit);
+  const totalBudget = expenseCategories.reduce((sum, c) => sum + (c.budgetLimit || 0), 0);
+  
+  // Calculate spent for this month
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  
+  const monthlyExpenses = transactions.filter(t => {
+    const d = new Date(t.date);
+    return t.type === 'expense' && d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  });
+  
+  const totalSpent = monthlyExpenses.reduce((sum, t) => sum + parseFloat(t.amount), 0);
+  const percentage = totalBudget > 0 ? Math.min((totalSpent / totalBudget) * 100, 100) : 0;
+  const remaining = Math.max(totalBudget - totalSpent, 0);
+  
+  // Update expense percentage of budget
+  const expensePercentageEl = document.getElementById('expensePercentageOfBudget');
+  if (expensePercentageEl) {
+    expensePercentageEl.textContent = `${percentage.toFixed(1)}%`;
+    if (percentage >= 100) {
+      expensePercentageEl.className = 'text-label-caps font-label-caps text-error';
+    } else if (percentage >= 80) {
+      expensePercentageEl.className = 'text-label-caps font-label-caps text-warning';
+    } else {
+      expensePercentageEl.className = 'text-label-caps font-label-caps text-primary';
+    }
+  }
+  
+  // Update budget gauge
+  const budgetGaugeContainer = document.getElementById('budget-gauge-container');
+  if (budgetGaugeContainer) {
+    if (totalBudget === 0) {
+      budgetGaugeContainer.style.display = 'none';
+    } else {
+      budgetGaugeContainer.style.display = 'block';
+      
+      const budgetSpent = document.getElementById('budgetSpent');
+      const budgetLimit = document.getElementById('budgetLimit');
+      const budgetPercentage = document.getElementById('budgetPercentage');
+      const budgetProgressBar = document.getElementById('budgetProgressBar');
+      const budgetRemainingText = document.getElementById('budgetRemainingText');
+      const budgetStatusBadge = document.getElementById('budgetStatusBadge');
+      
+      if (budgetSpent) budgetSpent.textContent = Utils.formatRupiah(totalSpent);
+      if (budgetLimit) budgetLimit.textContent = ` / ${Utils.formatRupiah(totalBudget)}`;
+      if (budgetPercentage) budgetPercentage.textContent = `${percentage.toFixed(1)}%`;
+      if (budgetProgressBar) budgetProgressBar.style.width = `${percentage}%`;
+      if (budgetRemainingText) {
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const daysLeft = daysInMonth - now.getDate();
+        budgetRemainingText.innerHTML = `Sisa anggaran: <span class="text-on-surface font-medium">${Utils.formatRupiah(remaining)}</span> untuk ${daysLeft} hari ke depan.`;
+      }
+      if (budgetStatusBadge) {
+        if (percentage >= 100) {
+          budgetStatusBadge.textContent = 'Melebihi';
+          budgetStatusBadge.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-label-caps font-label-caps bg-error-container/40 text-error border border-error/30';
+        } else if (percentage >= 80) {
+          budgetStatusBadge.textContent = 'Waspada';
+          budgetStatusBadge.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-label-caps font-label-caps bg-warning/20 text-warning border border-warning/30';
+        } else {
+          budgetStatusBadge.textContent = 'Aman';
+          budgetStatusBadge.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-label-caps font-label-caps bg-primary/20 text-primary border border-primary/30';
+        }
+      }
+    }
+  }
 }
 
 /**

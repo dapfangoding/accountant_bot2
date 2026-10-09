@@ -205,10 +205,9 @@
             </div>
           </div>
           <div>
-            <span class="text-headline-sm font-headline-sm font-bold text-on-surface">Rp 5.000.000</span>
+            <span id="incomeDisplay" class="text-headline-sm font-headline-sm font-bold text-on-surface">Rp 0</span>
             <div class="flex items-center gap-1 mt-1 text-primary">
-              <span class="text-label-caps font-label-caps">+20%</span>
-              <span class="text-label-md font-label-md text-on-surface-variant">target tercapai</span>
+              <span class="text-label-md font-label-md text-on-surface-variant">Bulan ini</span>
             </div>
           </div>
         </div>
@@ -221,36 +220,36 @@
             </div>
           </div>
           <div>
-            <span class="text-headline-sm font-headline-sm font-bold text-on-surface">Rp 2.575.000</span>
+            <span id="expenseDisplay" class="text-headline-sm font-headline-sm font-bold text-on-surface">Rp 0</span>
             <div class="flex items-center gap-1 mt-1 text-error">
-              <span class="text-label-caps font-label-caps">73.5%</span>
-              <span class="text-label-md font-label-md text-on-surface-variant">dari plafon</span>
+              <span id="expensePercentageOfBudget" class="text-label-caps font-label-caps">0%</span>
+              <span class="text-label-md font-label-md text-on-surface-variant">dari limit</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Budget Gauge -->
-      <div class="rounded-lg bg-surface-container-low border border-outline-variant/30 p-4">
+      <div id="budget-gauge-container" class="rounded-lg bg-surface-container-low border border-outline-variant/30 p-4">
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-1.5">
             <span class="material-symbols-outlined text-primary text-base" data-icon="pie_chart">pie_chart</span>
             <span class="text-label-lg font-label-lg text-on-surface">Batas Anggaran Bulanan</span>
           </div>
-          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-caps font-label-caps bg-error-container/40 text-error border border-error/30">Waspada</span>
+          <span id="budgetStatusBadge" class="inline-flex items-center px-2 py-0.5 rounded-full text-label-caps font-label-caps bg-primary/20 text-primary border border-primary/30">Aman</span>
         </div>
         <div class="flex items-baseline justify-between mb-2">
           <span class="text-body-md font-body-md text-on-surface">
-            <span class="font-bold text-on-surface">Rp 2.575.000</span>
-            <span class="text-on-surface-variant"> / Rp 3.500.000</span>
+            <span id="budgetSpent" class="font-bold text-on-surface">Rp 0</span>
+            <span id="budgetLimit" class="text-on-surface-variant"> / Rp 0</span>
           </span>
-          <span class="text-label-md font-label-md font-bold text-primary">73.5%</span>
+          <span id="budgetPercentage" class="text-label-md font-label-md font-bold text-primary">0%</span>
         </div>
         <div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-primary to-error" style="width: 73.5%;"></div>
+          <div id="budgetProgressBar" class="h-full bg-gradient-to-r from-primary to-error" style="width: 0%;"></div>
         </div>
-        <p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
-          Sisa anggaran aman: <span class="text-on-surface font-medium">Rp 925.000</span> untuk 12 hari ke depan.
+        <p class="text-body-sm font-body-sm text-on-surface-variant mt-2" id="budgetRemainingText">
+          Sisa anggaran aman: <span class="text-on-surface font-medium">Rp 0</span> untuk sisa bulan ini.
         </p>
       </div>
 
@@ -307,14 +306,19 @@
   <script src="js/app.js"></script>
 
   <script>
+    // Toggle balance visibility
     document.getElementById('toggleBalanceBtn').addEventListener('click', function() {
       const display = document.getElementById('balanceDisplay');
       const icon = document.getElementById('eyeIcon');
       const isHidden = display.textContent.includes('•');
+      
       if (isHidden) {
-        display.textContent = 'Rp 2.425.000';
+        // Show real balance (stored in data attribute)
+        display.textContent = display.dataset.realBalance || 'Rp 0';
         icon.textContent = 'visibility';
       } else {
+        // Store real balance and mask it
+        display.dataset.realBalance = display.textContent;
         display.textContent = 'Rp ••••••••';
         icon.textContent = 'visibility_off';
       }
