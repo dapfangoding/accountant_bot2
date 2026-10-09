@@ -154,6 +154,18 @@
         </div>
       </section>
 
+      <!-- Date Range Inputs (for custom period) -->
+      <section id="custom-date-range" class="hidden grid grid-cols-2 gap-3 bg-surface-container-low rounded-lg p-3 border border-outline-variant/30">
+        <div>
+          <label class="block text-label-md text-on-surface-variant mb-1">Tanggal Mulai</label>
+          <input type="date" id="start-date" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-label-md text-on-surface-variant mb-1">Tanggal Akhir</label>
+          <input type="date" id="end-date" class="w-full px-3 py-2 bg-surface-container border border-outline-variant/50 rounded text-on-surface focus:border-primary focus:outline-none">
+        </div>
+      </section>
+
       <!-- Financial Health Card -->
       <section class="relative overflow-hidden rounded-lg bg-surface-container-low border border-outline-variant/30 p-5 shadow-sm">
         <div class="absolute -top-16 -right-16 w-36 h-36 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -245,16 +257,64 @@
 
   <script>
     function setPeriod(period) {
-      const buttons = document.querySelectorAll('section button');
-      buttons.forEach((btn, idx) => {
+      const buttons = document.querySelectorAll('section:first-of-type button');
+      buttons.forEach((btn) => {
         btn.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
         btn.classList.add('text-on-surface-variant');
       });
-      if (period === 'week') buttons[0].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
-      if (period === 'month') buttons[1].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
-      if (period === 'year') buttons[2].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
-      if (period === 'custom') buttons[3].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+      
+      const customRange = document.getElementById('custom-date-range');
+      const startDateInput = document.getElementById('start-date');
+      const endDateInput = document.getElementById('end-date');
+      
+      const today = new Date();
+      let start, end;
+      
+      switch (period) {
+        case 'week':
+          start = new Date(today.setDate(today.getDate() - 7)).toISOString().split('T')[0];
+          end = new Date().toISOString().split('T')[0];
+          customRange?.classList.add('hidden');
+          break;
+        case 'month':
+          start = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+          end = new Date().toISOString().split('T')[0];
+          customRange?.classList.add('hidden');
+          break;
+        case 'year':
+          start = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
+          end = new Date().toISOString().split('T')[0];
+          customRange?.classList.add('hidden');
+          break;
+        case 'custom':
+          start = startDateInput?.value || new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+          end = endDateInput?.value || new Date().toISOString().split('T')[0];
+          customRange?.classList.remove('hidden');
+          break;
+      }
+      
+      if (startDateInput) startDateInput.value = start;
+      if (endDateInput) endDateInput.value = end;
+      
+      if (period !== 'custom') {
+        if (period === 'week') buttons[0].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+        if (period === 'month') buttons[1].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+        if (period === 'year') buttons[2].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+        if (period === 'custom') buttons[3].classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold', 'shadow-sm');
+      }
+      
+      if (typeof applyDateFilter === 'function') {
+        applyDateFilter();
+      }
     }
+    
+    // Apply filter when custom dates change
+    document.addEventListener('DOMContentLoaded', () => {
+      const startDateInput = document.getElementById('start-date');
+      const endDateInput = document.getElementById('end-date');
+      if (startDateInput) startDateInput.addEventListener('change', applyDateFilter);
+      if (endDateInput) endDateInput.addEventListener('change', applyDateFilter);
+    });
   </script>
 </body>
 </html>
