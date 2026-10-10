@@ -105,13 +105,9 @@ const Sidebar = {
             </div>
             <span class="sidebar-text text-lg font-bold text-gray-800 dark:text-white transition-opacity duration-200">FinBot</span>
           </div>
-          <!-- Desktop toggle / hide button -->
-          <button id="desktop-sidebar-toggle" class="hidden lg:flex p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors" title="Sembunyikan/Tampilkan Navigasi">
-            <i id="desktop-collapse-icon" class="fas fa-chevron-left text-sm"></i>
-          </button>
-          <!-- Mobile close button -->
-          <button id="sidebar-close" class="lg:hidden text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-            <i class="fas fa-times"></i>
+          <!-- Hamburger / Toggle button (next to FinBot logo) -->
+          <button id="sidebar-hamburger-toggle" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors" title="Sembunyikan/Tampilkan Navigasi">
+            <i id="sidebar-hamburger-icon" class="fas fa-bars text-lg"></i>
           </button>
         </div>
 
@@ -153,13 +149,19 @@ const Sidebar = {
    * Setup event listeners for sidebar
    */
   setupEventListeners() {
-    // Desktop collapse toggle
-    const desktopToggle = document.getElementById('desktop-sidebar-toggle');
-    if (desktopToggle) {
-      desktopToggle.addEventListener('click', () => this.toggleCollapse());
+    // Hamburger toggle next to FinBot logo
+    const hamburgerToggle = document.getElementById('sidebar-hamburger-toggle');
+    if (hamburgerToggle) {
+      hamburgerToggle.addEventListener('click', () => {
+        if (window.innerWidth >= 1024) {
+          this.toggleCollapse();
+        } else {
+          this.toggle();
+        }
+      });
     }
 
-    // Mobile menu toggle
+    // Mobile menu toggle (from topbar)
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebar-overlay');
