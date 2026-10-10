@@ -93,21 +93,34 @@ const Sidebar = {
 
     container.innerHTML = `
       <!-- Mobile sidebar overlay -->
-      <div id="sidebar-overlay" class="sidebar-overlay lg:hidden"></div>
+      <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
       
       <!-- Sidebar -->
       <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 lg:w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full lg:translate-x-0 transition-all duration-300 ease-in-out">
+        <!-- Close button for mobile -->
+        <div class="lg:hidden flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 min-w-[2rem] bg-primary-500 rounded-lg flex items-center justify-center">
+              <i class="fas fa-wallet text-white text-sm"></i>
+            </div>
+            <span class="text-lg font-bold text-gray-800 dark:text-white">FinBot</span>
+          </div>
+          <button id="sidebar-close" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors" title="Tutup">
+            <i class="fas fa-times text-lg"></i>
+          </button>
+        </div>
+
         <!-- Logo & Desktop Toggle -->
-        <div class="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="hidden lg:flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
           <div class="flex items-center gap-3 overflow-hidden">
             <div class="w-8 h-8 min-w-[2rem] bg-primary-500 rounded-lg flex items-center justify-center">
               <i class="fas fa-wallet text-white text-sm"></i>
             </div>
             <span class="sidebar-text text-lg font-bold text-gray-800 dark:text-white transition-opacity duration-200">FinBot</span>
           </div>
-          <!-- Hamburger / Toggle button (next to FinBot logo) -->
-          <button id="sidebar-hamburger-toggle" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors" title="Sembunyikan/Tampilkan Navigasi">
-            <i id="sidebar-hamburger-icon" class="fas fa-bars text-lg"></i>
+          <!-- Desktop collapse toggle (hidden on mobile) -->
+          <button id="sidebar-desktop-toggle" class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors" title="Sembunyikan/Tampilkan Navigasi">
+            <i id="desktop-collapse-icon" class="fas fa-chevron-left text-sm"></i>
           </button>
         </div>
 
@@ -149,45 +162,37 @@ const Sidebar = {
    * Setup event listeners for sidebar
    */
   setupEventListeners() {
-    // Hamburger toggle next to FinBot logo
-    const hamburgerToggle = document.getElementById('sidebar-hamburger-toggle');
-    if (hamburgerToggle) {
-      hamburgerToggle.addEventListener('click', () => {
+    // Desktop collapse toggle
+    const desktopToggle = document.getElementById('sidebar-desktop-toggle');
+    if (desktopToggle) {
+      desktopToggle.addEventListener('click', () => {
         if (window.innerWidth >= 1024) {
           this.toggleCollapse();
-        } else {
-          this.toggle();
         }
       });
     }
 
     // Mobile menu toggle (from topbar)
     const mobileToggle = document.getElementById('mobile-menu-toggle');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    const closeBtn = document.getElementById('sidebar-close');
-
     if (mobileToggle) {
       mobileToggle.addEventListener('click', () => {
-        sidebar.classList.remove('-translate-x-full');
-        overlay?.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        this.toggle();
       });
     }
 
+    // Close button for mobile
+    const closeBtn = document.getElementById('sidebar-close');
     if (closeBtn) {
       closeBtn.addEventListener('click', () => {
-        sidebar.classList.add('-translate-x-full');
-        overlay?.classList.remove('active');
-        document.body.style.overflow = '';
+        this.close();
       });
     }
 
+    // Overlay click to close
+    const overlay = document.getElementById('sidebar-overlay');
     if (overlay) {
       overlay.addEventListener('click', () => {
-        sidebar.classList.add('-translate-x-full');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
+        this.close();
       });
     }
   },
@@ -199,13 +204,8 @@ const Sidebar = {
    */
   handleNavigation(event, page) {
     // Close mobile menu on navigation
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    
     if (window.innerWidth < 1024) {
-      sidebar.classList.add('-translate-x-full');
-      overlay?.classList.remove('active');
-      document.body.style.overflow = '';
+      this.close();
     }
   },
 
@@ -248,12 +248,24 @@ const Sidebar = {
     
     if (sidebar.classList.contains('-translate-x-full')) {
       sidebar.classList.remove('-translate-x-full');
-      overlay?.classList.add('active');
+      overlay?.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
     } else {
       sidebar.classList.add('-translate-x-full');
-      overlay?.classList.remove('active');
+      overlay?.classList.add('hidden');
       document.body.style.overflow = '';
     }
+  },
+
+  /**
+   * Close sidebar on mobile
+   */
+  close() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    
+    sidebar.classList.add('-translate-x-full');
+    overlay?.classList.add('hidden');
+    document.body.style.overflow = '';
   },
 };
