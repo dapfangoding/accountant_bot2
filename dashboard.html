@@ -15,7 +15,10 @@
   
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script id="tailwind-config">
@@ -136,7 +139,7 @@
   
   <!-- Main Content Area -->
   <div class="lg:pl-64">
-    <!-- Topbar Container -->
+      <!-- Topbar Container -->
     <div id="topbar-container"></div>
     
     <!-- Main Content -->
@@ -276,6 +279,9 @@
   </div>
 
   <!-- Scripts -->
+  <script src="js/core/config.js"></script>
+  <script src="js/core/supabase.js"></script>
+  <script src="js/core/auth.js"></script>
   <script src="js/core/storage.js"></script>
   <script src="js/core/utils.js"></script>
   <script src="js/core/router.js"></script>

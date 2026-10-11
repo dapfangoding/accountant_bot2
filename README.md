@@ -1,12 +1,23 @@
-# FinBot - Asisten Keuangan Pribadi
+# FinBot AI - Asisten Keuangan Pribadi ☁️
 
-Aplikasi manajemen keuangan pribadi berbasis web dengan struktur multi-file yang modular dan mudah di-maintain.
+Aplikasi manajemen keuangan pribadi berbasis web dengan **cloud database (Supabase)** dan struktur multi-file yang modular dan mudah di-maintain.
+
+## 🆕 Fitur Baru: Cloud Database dengan Supabase!
+
+- ✅ **Sinkronisasi Cloud**: Data tersimpan di cloud dan bisa diakses dari device mana saja
+- ✅ **Authentication**: Login/register dengan email dan password
+- ✅ **Real-time Sync**: Data otomatis tersinkronisasi antar device
+- ✅ **Secure**: Row Level Security (RLS) untuk keamanan data
+- ✅ **Demo Mode**: Tetap bisa digunakan tanpa login (data lokal di browser)
+- ✅ **Migration Ready**: Export/import data dari localStorage ke cloud
 
 ## 📁 Struktur Folder
 
 ```
 /workspace/
 ├── index.html                    # Entry point (redirect ke dashboard)
+├── login.html                    # Halaman login (NEW)
+├── register.html                 # Halaman register (NEW)
 ├── dashboard.html                # Halaman dashboard utama
 ├── chatbot.html                  # Halaman chatbot AI
 ├── transactions.html             # Halaman tabel transaksi
@@ -14,19 +25,25 @@ Aplikasi manajemen keuangan pribadi berbasis web dengan struktur multi-file yang
 ├── reports.html                  # Halaman laporan keuangan
 ├── settings.html                 # Halaman pengaturan
 │
+├── supabase_schema.sql           # Database schema untuk Supabase (NEW)
+├── SUPABASE_SETUP.md             # Panduan setup Supabase (NEW)
+│
 ├── css/
 │   ├── tailwind.config.js        # Konfigurasi tema Tailwind
 │   └── custom.css                # Custom styles tambahan
 │
 ├── js/
 │   ├── core/
-│   │   ├── storage.js            # Wrapper localStorage
+│   │   ├── config.js             # Config & credentials (NEW)
+│   │   ├── supabase.js           # Supabase integration (NEW)
+│   │   ├── auth.js               # Authentication module (NEW)
+│   │   ├── storage.js            # Unified storage (localStorage + Supabase)
 │   │   ├── router.js             # Hash-based routing
 │   │   └── utils.js              # Fungsi utility
 │   │
 │   ├── components/
 │   │   ├── sidebar.js            # Komponen sidebar
-│   │   ├── topbar.js             # Komponen topbar
+│   │   ├── topbar.js             # Komponen topbar (updated with user menu)
 │   │   └── charts.js             # Wrapper Chart.js
 │   │
 │   ├── pages/
@@ -37,7 +54,7 @@ Aplikasi manajemen keuangan pribadi berbasis web dengan struktur multi-file yang
 │   │   ├── reports.js            # Logic halaman laporan
 │   │   └── settings.js           # Logic halaman pengaturan
 │   │
-│   └── app.js                    # Main entry point
+│   └── app.js                    # Main entry point (updated)
 │
 └── README.md                     # Dokumentasi ini
 ```
@@ -81,11 +98,43 @@ Aplikasi manajemen keuangan pribadi berbasis web dengan struktur multi-file yang
 
 ## 🛠️ Teknologi
 
+- **Supabase** - Cloud database & authentication (NEW)
 - **Tailwind CSS** - Styling framework (via CDN)
 - **Chart.js** - Visualisasi grafik
 - **SheetJS (XLSX)** - Export Excel
 - **Font Awesome** - Icon library
 - **Vanilla JavaScript** - No framework, no build step
+
+## 🚀 Quick Start
+
+### Opsi 1: Mode Demo (Tanpa Setup)
+
+1. Download atau clone repository
+2. Buka `dashboard.html` di browser
+3. Klik **"Coba Mode Demo"** di halaman login
+4. Data tersimpan di browser (localStorage)
+
+### Opsi 2: Cloud Mode (Dengan Supabase)
+
+1. **Setup Supabase** (5 menit):
+   ```bash
+   # Ikuti panduan lengkap di SUPABASE_SETUP.md
+   ```
+   - Buat akun di [supabase.com](https://supabase.com)
+   - Buat project baru
+   - Jalankan `supabase_schema.sql` di SQL Editor
+   - Copy Project URL dan API Key
+
+2. **Konfigurasi App**:
+   - Edit `js/core/config.js`
+   - Paste Project URL dan Anon Key
+
+3. **Jalankan App**:
+   - Buka `register.html` untuk daftar
+   - Atau buka `login.html` untuk login
+   - Data tersimpan di cloud ☁️
+
+📖 **Panduan lengkap**: Lihat [SUPABASE_SETUP.md](SUPABASE_SETUP.md)
 
 ## 📦 Deploy
 
@@ -160,7 +209,24 @@ menuItems: [
 
 ## 🔐 Penyimpanan Data
 
-Semua data disimpan di **localStorage** browser:
+### Cloud Mode (Supabase) ☁️
+
+Data tersimpan di cloud database PostgreSQL:
+- ✅ **Multi-device sync**: Akses dari mana saja
+- ✅ **Secure**: Row Level Security (RLS)
+- ✅ **Scalable**: Unlimited data (free tier: 500MB)
+- ✅ **Backup**: Auto backup oleh Supabase
+- ✅ **Real-time**: Sinkronisasi otomatis
+
+Tabel yang digunakan:
+- `transactions` - Semua transaksi
+- `categories` - Kategori transaksi
+- `settings` - Pengaturan user
+- `chat_history` - Riwayat chat
+
+### Demo Mode (localStorage)
+
+Data tersimpan di browser:
 - `finance_transactions` - Semua transaksi
 - `finance_categories` - Kategori transaksi
 - `finance_settings` - Pengaturan aplikasi
@@ -170,22 +236,51 @@ Semua data disimpan di **localStorage** browser:
 
 ## 🐛 Troubleshooting
 
-### Halaman tidak menampilkan data
+### Supabase Connection Issues
+
+**Error: "Failed to initialize Supabase"**
+- Periksa `js/core/config.js` - pastikan URL dan key sudah benar
+- Format URL harus: `https://xxxxx.supabase.co`
+- Pastikan anon key lengkap (biasanya sangat panjang)
+
+**Error: "User not authenticated"**
+- Session expired - logout dan login kembali
+- Clear browser cache dan cookies
+- Periksa browser console untuk error details
+
+**Data tidak tersinkronisasi**
+- Periksa koneksi internet
+- Cek Supabase Dashboard > Project Status
+- Pastikan RLS policies aktif di semua tabel
+
+### General Issues
+
+**Halaman tidak menampilkan data**
 - Pastikan semua file JS ter-load dengan urutan benar
-- Cek console browser untuk error
+- Cek console browser untuk error (F12)
 - Clear localStorage dan refresh
 
-### Chart tidak muncul
+**Chart tidak muncul**
 - Pastikan Chart.js CDN ter-load
 - Cek ukuran container chart (harus ada height)
 
-### Dark mode tidak berfungsi
-- Clear localStorage
-- Pastikan `settings.darkMode` tersimpan dengan benar
+**Dark mode tidak berfungsi**
+- Clear localStorage atau settings di Supabase
+- Refresh halaman dan coba lagi
 
-### Export Excel tidak bekerja
+**Export Excel tidak bekerja**
 - Pastikan SheetJS CDN ter-load
 - Cek popup blocker browser
+
+### Migration dari localStorage ke Supabase
+
+Jika sudah punya data di demo mode dan ingin migrate:
+
+1. Export data dari demo mode
+2. Login dengan akun Supabase
+3. Import data melalui halaman Settings
+
+📖 Detail lengkap: [SUPABASE_SETUP.md](SUPABASE_SETUP.md)
 
 ## 📝 License
 

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - FinBot AI</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+  <div class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="max-w-md w-full space-y-8">
+      <!-- Logo & Title -->
+      <div class="text-center">
+        <div class="text-6xl mb-4">💰</div>
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+          FinBot AI
+        </h2>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          Asisten Keuangan Pribadi Anda
+        </p>
+      </div>
+
+      <!-- Login Form -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+        <form id="login-form" class="space-y-6">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Email
+            </label>
+            <div class="mt-1 relative">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                class="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:text-white"
+                placeholder="nama@email.com"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Password
+            </label>
+            <div class="mt-1 relative">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                class="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:text-white"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                id="toggle-password"
+                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                <i class="fas fa-eye" id="password-icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div id="error-message" class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-md text-sm">
+          </div>
+
+          <!-- Submit Button -->
+          <div>
+            <button
+              type="submit"
+              id="submit-btn"
+              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors"
+            >
+              <span id="btn-text">Masuk</span>
+              <span id="btn-loading" class="hidden">
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+                Memproses...
+              </span>
+            </button>
+          </div>
+
+          <!-- Register Link -->
+          <div class="text-center">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Belum punya akun?
+              <a href="register.html" class="font-medium text-emerald-600 hover:text-emerald-500">
+                Daftar sekarang
+              </a>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- Demo Mode -->
+      <div class="text-center">
+        <button
+          id="demo-mode"
+          class="text-sm text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-500 transition-colors"
+        >
+          <i class="fas fa-play-circle mr-1"></i>
+          Coba Mode Demo (tanpa login)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- App Scripts -->
+  <script src="js/core/config.js"></script>
+  <script src="js/core/supabase.js"></script>
+  <script src="js/core/auth.js"></script>
+
+  <script>
+    // Initialize Supabase
+    SupabaseDB.init(Config.supabase.url, Config.supabase.anonKey);
+
+    // DOM Elements
+    const loginForm = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('toggle-password');
+    const passwordIcon = document.getElementById('password-icon');
+    const errorMessage = document.getElementById('error-message');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+    const demoMode = document.getElementById('demo-mode');
+
+    // Toggle password visibility
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      passwordIcon.classList.toggle('fa-eye');
+      passwordIcon.classList.toggle('fa-eye-slash');
+    });
+
+    // Show error message
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.remove('hidden');
+    }
+
+    // Hide error message
+    function hideError() {
+      errorMessage.classList.add('hidden');
+    }
+
+    // Set loading state
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      if (loading) {
+        btnText.classList.add('hidden');
+        btnLoading.classList.remove('hidden');
+      } else {
+        btnText.classList.remove('hidden');
+        btnLoading.classList.add('hidden');
+      }
+    }
+
+    // Handle form submit
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideError();
+      setLoading(true);
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      try {
+        const result = await Auth.signIn(email, password);
+
+        if (result.success) {
+          // Redirect will happen automatically in Auth.onLogin
+        } else {
+          showError(result.error || 'Login gagal. Silakan coba lagi.');
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showError('Terjadi kesalahan. Silakan coba lagi.');
+        setLoading(false);
+      }
+    });
+
+    // Demo mode - redirect to dashboard without login
+    demoMode.addEventListener('click', () => {
+      localStorage.setItem('demo_mode', 'true');
+      window.location.href = 'dashboard.html';
+    });
+
+    // Check if already logged in
+    (async () => {
+      const user = await SupabaseDB.checkAuth();
+      if (user) {
+        window.location.href = 'dashboard.html';
+      }
+    })();
+  </script>
+</body>
+</html>

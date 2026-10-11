@@ -126,16 +126,23 @@ const Sidebar = {
         </nav>
 
         <!-- Bottom section -->
-        <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-200 dark:border-gray-700 overflow-hidden">
-          <div class="flex items-center gap-3 px-2 py-2">
+        <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-200 dark:border-gray-700 space-y-2">
+          <!-- User info -->
+          <div class="flex items-center gap-3 px-2 py-2 overflow-hidden">
             <div class="w-8 h-8 min-w-[2rem] bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
               <i class="fas fa-user text-primary-600 dark:text-primary-400 text-sm"></i>
             </div>
             <div class="sidebar-text flex-1 overflow-hidden">
-              <p class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">User</p>
-              <p class="text-xs text-gray-500 dark:text-gray-500 truncate">Free Plan</p>
+              <p id="sidebar-user-name" class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">User</p>
+              <p id="sidebar-user-mode" class="text-xs text-gray-500 dark:text-gray-500 truncate">Demo Mode</p>
             </div>
           </div>
+          
+          <!-- Logout button -->
+          <button id="sidebar-logout-btn" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+            <i class="fas fa-sign-out-alt w-5 min-w-[1.25rem] text-center"></i>
+            <span class="sidebar-text font-medium whitespace-nowrap">Logout</span>
+          </button>
         </div>
       </aside>
     `;
@@ -189,6 +196,68 @@ const Sidebar = {
         overlay.classList.remove('active');
         document.body.style.overflow = '';
       });
+    }
+
+    // Logout button
+    const logoutBtn = document.getElementById('sidebar-logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async () => {
+        if (confirm('Apakah Anda yakin ingin logout?')) {
+          if (typeof Auth !== 'undefined') {
+            const result = await Auth.signOut();
+            if (result.success) {
+              // Clear demo mode flag
+              localStorage.removeItem('demo_mode');
+              // Redirect to login
+              window.location.href = 'login.html';
+            }
+          } else {
+            // Demo mode - just redirect to login
+            localStorage.removeItem('demo_mode');
+            window.location.href = 'login.html';
+          }
+        }
+      });
+    }
+
+    // Update user info in sidebar
+    this.updateUserInfo();
+  },
+
+  /**
+   * Update user info display in sidebar
+   */
+  updateUserInfo() {
+    const userNameEl = document.getElementById('sidebar-user-name');
+    const userModeEl = document.getElementById('sidebar-user-mode');
+    
+    if (typeof Auth !== 'undefined' && Auth.getCurrentUser()) {
+      const displayName = Auth.getUserDisplayName();
+      const user = Auth.getCurrentUser();
+      
+      if (userNameEl) {
+        userNameEl.textContent = displayName;
+      }
+      
+      if (userModeEl) {
+        userModeEl.textContent = user.email || 'Cloud Mode';
+      }
+    } else if (typeof Storage !== 'undefined' && Storage.isDemoMode()) {
+      if (userNameEl) {
+        userNameEl.textContent = 'Demo User';
+      }
+      
+      if (userModeEl) {
+        userModeEl.textContent = 'Mode Demo';
+      }
+    } else {
+      if (userNameEl) {
+        userNameEl.textContent = 'Guest';
+      }
+      
+      if (userModeEl) {
+        userModeEl.textContent = 'Offline Mode';
+      }
     }
   },
 
